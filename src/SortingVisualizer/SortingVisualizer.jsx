@@ -19,22 +19,31 @@ export default class SortingVisualizer extends React.Component {
     // Creates an int array of length 100 containing numbers between 5-100.
     resetArray() {
         const array = [];
-        for (let i = 0; i < 20/*225*/; i++) {
+        for (let i = 0; i < 225; i++) {
             array.push(randomIntFromInterval(5, 85));
         }
         this.setState({ array });
     }
 
     selectionSort() {
-        const javaScriptSort = this.state.array.slice().sort();
+        const javaScriptSort = this.state.array
+            .slice()
+            .sort((a, b) => a - b);
         const mySelectionSort = sortingAlgorithms.selectionSort(this.state.array);
+        console.log(javaScriptSort);
+        console.log(mySelectionSort);
         console.log(this.arraysAreEqual(javaScriptSort, mySelectionSort));
     }
 
-    arraysAreEqual(a1, a2) {
-        console.log(a1);
-        console.log(a2);
-        return JSON.stringify(a1)==JSON.stringify(a2);
+    arraysAreEqual(a, b) {
+        if (a === b) return true;
+        if (a == null || b == null) return false;
+        if (a.length !== b.length) return false;
+
+        for (var i = 0; i < a.length; ++i) {
+            if (a[i] !== b[i]) return false;
+        }
+        return true;
     }
 
     render() {
@@ -47,7 +56,7 @@ export default class SortingVisualizer extends React.Component {
                         className="array-bar"
                         key={idx}
                         style={{ height: `${value}vh` }}
-                ></div>
+                    ></div>
                 ))}
                 <br></br>
                 <button onClick={() => this.resetArray()}>Generate New Array</button>

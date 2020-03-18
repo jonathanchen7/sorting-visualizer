@@ -1,14 +1,21 @@
-export const selectionSort = array => {
-    const sortedArray = array.slice(0);
+export const selectionSort = arr => {
+    const arrCopy = arr.slice();
+    let len = arrCopy.length;
+    console.log(arrCopy);
 
-    for (let i = 0; i < sortedArray.length; i++) {
-        let minIndex = 0;
-        for (let j = i + 1; j < sortedArray.length; j++) {
-            minIndex = Math.min(sortedArray[minIndex], sortedArray[j]);
+    for (let i = 0; i < len; i++) {
+        let minIndex = i;
+        for (let j = i + 1; j < len; j++) {
+            if (arrCopy[minIndex] > arrCopy[j]) {
+                minIndex = j;
+            }
+            minIndex = (arrCopy[minIndex] > arrCopy[j]) ? j : minIndex;
         }
-        let temp = sortedArray[minIndex];
-        sortedArray[minIndex] = sortedArray[i];
-        sortedArray[i] = temp;
+
+        let temp = arrCopy[minIndex];
+        arrCopy[minIndex] = arrCopy[i];
+        arrCopy[i] = temp;
+
     }
-    return sortedArray;
+    return arrCopy;
 };
