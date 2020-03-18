@@ -26,13 +26,21 @@ export default class SortingVisualizer extends React.Component {
     }
 
     selectionSort() {
-        const javaScriptSort = this.state.array
-            .slice()
-            .sort((a, b) => a - b);
-        const mySelectionSort = sortingAlgorithms.selectionSort(this.state.array);
-        console.log(javaScriptSort);
-        console.log(mySelectionSort);
-        console.log(this.arraysAreEqual(javaScriptSort, mySelectionSort));
+
+    }
+
+    testAlgorithms() {
+        for (let i = 0; i < 100; i++) {
+            const array = [];
+            const len = randomIntFromInterval(1, 1000);
+            for (let j = 0; j < len; j++) {
+                array.push(randomIntFromInterval(-1000, 1000));
+            }
+            const javaScriptSort = array.slice().sort((a, b) => a - b);
+            const selectionSortArray = sortingAlgorithms.selectionSort(array.slice());
+            console.log("Selection Sort: " + this.arraysAreEqual(javaScriptSort, selectionSortArray));
+        }
+
     }
 
     arraysAreEqual(a, b) {
@@ -61,6 +69,7 @@ export default class SortingVisualizer extends React.Component {
                 <br></br>
                 <button onClick={() => this.resetArray()}>Generate New Array</button>
                 <button onClick={() => this.selectionSort()}>Selection Sort</button>
+                <button onClick={() => this.testAlgorithms()}>Test Sorting Algorithms</button>
             </div>
         );
     }
