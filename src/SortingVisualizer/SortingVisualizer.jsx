@@ -19,15 +19,43 @@ export default class SortingVisualizer extends React.Component {
     // Creates an int array of length 100 containing numbers between 5-100.
     resetArray() {
         const array = [];
-        for (let i = 0; i < 20; i++) {
+        for (let i = 0; i < 5; i++) {
             array.push(randomIntFromInterval(5, 85));
         }
         this.setState({ array });
     }
 
     selectionSort() {
+        const animations = sortingAlgorithms.selectionSortAnimations(this.state.array);
+
+        for (let i = 0; i < animations.length; i++) {
+            const arrayBars = document.getElementsByClassName('array-bar');
+
+            let swap = animations[i][0];
+            let aIndex = animations[i][1];
+            let bIndex = animations[i][2];
+
+            console.log(animations[i]);
+
+            if (swap) {
+                let minIndexStyle = arrayBars[aIndex].style;
+                let swapIndexStyle = arrayBars[bIndex].style;
+                
+                let minIndexHeight = minIndexStyle.height;
+                let swapIndexHeight = swapIndexStyle.height;
+                console.log('minIndexHeight: ' + minIndexHeight + ' swapIndexHeight: ' + swapIndexHeight);
+
+                setTimeout(() => {
+                    swapIndexStyle.backgroundColor = 'red';
+                    swapIndexStyle.height = minIndexHeight;
+                }, i * 300)
+                setTimeout(() => {
+                    swapIndexStyle.backgroundColor = 'blue';
+                }, i * 300)
+            } 
+        }
         const array = sortingAlgorithms.selectionSort(this.state.array.slice());
-        this.setState({ array });
+        // this.setState({ array });
     }
 
     testAlgorithms() {
