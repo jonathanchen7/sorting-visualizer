@@ -5,8 +5,8 @@
 }
 
 .array-bar {
-    width: 3px;
+    width: 50px;
     background-color: turquoise;
     display: inline-block;
-    margin: 0 1px;
+    margin: 0 3px;
 }

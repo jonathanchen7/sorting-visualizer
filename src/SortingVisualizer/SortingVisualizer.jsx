@@ -19,14 +19,15 @@ export default class SortingVisualizer extends React.Component {
     // Creates an int array of length 100 containing numbers between 5-100.
     resetArray() {
         const array = [];
-        for (let i = 0; i < 225; i++) {
+        for (let i = 0; i < 20; i++) {
             array.push(randomIntFromInterval(5, 85));
         }
         this.setState({ array });
     }
 
     selectionSort() {
-
+        const array = sortingAlgorithms.selectionSort(this.state.array.slice());
+        this.setState({ array });
     }
 
     testAlgorithms() {
