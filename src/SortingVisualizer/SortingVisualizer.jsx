@@ -1,8 +1,11 @@
 import React from 'react';
 import './SortingVisualizer.css';
-import * as sortingAlgorithms from '../sortingAlgorithms/sortingAlgorithms.js'
+import * as SelectionSort from '../SortingAlgorithms/SelectionSort.js'
 
-const ANIMATION_SPEED_MS = 50;
+const DEBUG = false;
+
+const ANIMATION_SPEED_MS = 2;
+const PRIMARY_COLOR = 'turquoise';
 
 export default class SortingVisualizer extends React.Component {
     constructor(props) {
@@ -21,69 +24,62 @@ export default class SortingVisualizer extends React.Component {
     // Creates an int array of length ___
     resetArray() {
         const array = [];
-        for (let i = 0; i < 20; i++) {
+        for (let i = 0; i < 275; i++) {
             array.push(randomIntFromInterval(5, 85));
         }
         this.setState({ array });
     }
 
     selectionSort() {
-        const animations = sortingAlgorithms.selectionSortAnimations(this.state.array);
+        const animations = SelectionSort.sortingAnimations(this.state.array);
         const length = this.state.array.length;
 
-        console.log(animations);
+        if (DEBUG) console.log(animations);
 
         // Variables used to track the swapped array indices.
-        let swapIndex = 2 * (length - 1);
+        let swapIndex = length - 1;
         let count = 1;
         
         let changeColor = true;
 
+        let [aIndexPrev, bIndexPrev] = animations[0];
         for (let i = 0; i < animations.length; i++) {
             const arrayBars = document.getElementsByClassName('array-bar');
 
             const [aIndex, bIndex] = animations[i];
+
             const aStyle = arrayBars[aIndex].style;
             const bStyle = arrayBars[bIndex].style;
+            const aStylePrev = arrayBars[aIndexPrev].style;
+            const bStylePrev = arrayBars[bIndexPrev].style;
 
             if (i === swapIndex) {                
-                swapIndex += 2 * (length - count++);
-                i++;
+                swapIndex += length - count++;
 
                 setTimeout(() => {
                     let temp = aStyle.height;
                     aStyle.height = bStyle.height;
+                    aStyle.backgroundColor = 'red';
                     bStyle.height = temp;
+                    aStylePrev.backgroundColor = PRIMARY_COLOR;
+                    bStylePrev.backgroundColor = PRIMARY_COLOR;
                 }, i * ANIMATION_SPEED_MS);
 
-                console.log("Swap " + animations[i]);
+                if (DEBUG) console.log("Swap " + animations[i]);
             } else {
-                let aColor;
-                let bColor;
-
-                if (changeColor) {
-                    console.log("highlight");
-                    aColor = 'green';
-                    bColor = 'blue';
-                    changeColor = false;
-                } else {
-                    console.log("unhighlight");
-                    aColor = 'turquoise';
-                    bColor = 'turquoise';
-                    changeColor = true;
-                }
-
-                console.log("Compare " + animations[i]);
+                if (DEBUG) console.log("Compare " + animations[i]);
 
                 setTimeout(() => {
-                    aStyle.backgroundColor = aColor;
-                    bStyle.backgroundColor = bColor;
+                    aStyle.backgroundColor = 'green';
+                    bStyle.backgroundColor = 'blue';
+                    bStylePrev.backgroundColor = PRIMARY_COLOR;
                 }, i * ANIMATION_SPEED_MS);
 
                 
             }
 
-
+            aIndexPrev = aIndex;
+            bIndexPrev = bIndex;
         }
 
     }
@@ -101,7 +97,7 @@ export default class SortingVisualizer extends React.Component {
                 array.push(randomIntFromInterval(-1000, 1000));
             }
             const javaScriptSort = array.slice().sort((a, b) => a - b);
-            const selectionSortArray = sortingAlgorithms.selectionSort(array.slice());
+            const selectionSortArray = SelectionSort.sort(array.slice());
             console.log("Selection Sort: " + this.arraysAreEqual(javaScriptSort, selectionSortArray));
         }
 

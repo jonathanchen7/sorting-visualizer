@@ -1,4 +1,5 @@
-export const selectionSort = arr => {
+// Selection Sort implementation.
+export const sort = arr => {
     const arrCopy = arr.slice();
     let len = arrCopy.length;
 
@@ -18,25 +19,25 @@ export const selectionSort = arr => {
     return arrCopy;
 };
 
-export const selectionSortAnimations = arr => {
+// Selection Sort implementation that returns an array of animations.
+export const sortingAnimations = arr => {
     const animations = [];
     const arrCopy = arr.slice();
     let len = arrCopy.length;
 
     for (let i = 0; i < len; i++) {
         let minIndex = i;
+        /* Each comparison pushes a pair of indices to animations, with the index corresponding to the 
+        lower value as the first index in the pair.*/
         for (let j = i + 1; j < len; j++) {
             if (arrCopy[minIndex] > arrCopy[j]) {
-                animations.push([j, minIndex]);
                 animations.push([j, minIndex]);
                 minIndex = j;
             } else {
                 animations.push([minIndex, j]);
-                animations.push([minIndex, j]);
             }
         }
 
-        animations.push([minIndex, i]);
         animations.push([minIndex, i]);
         let temp = arrCopy[minIndex];
         arrCopy[minIndex] = arrCopy[i];
