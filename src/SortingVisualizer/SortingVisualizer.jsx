@@ -2,6 +2,8 @@ import React from 'react';
 import './SortingVisualizer.css';
 import * as sortingAlgorithms from '../sortingAlgorithms/sortingAlgorithms.js'
 
+const ANIMATION_SPEED_MS = 50;
+
 export default class SortingVisualizer extends React.Component {
     constructor(props) {
         super(props);
@@ -19,7 +21,7 @@ export default class SortingVisualizer extends React.Component {
     // Creates an int array of length ___
     resetArray() {
         const array = [];
-        for (let i = 0; i < 10; i++) {
+        for (let i = 0; i < 20; i++) {
             array.push(randomIntFromInterval(5, 85));
         }
         this.setState({ array });
@@ -29,32 +31,53 @@ export default class SortingVisualizer extends React.Component {
         const animations = sortingAlgorithms.selectionSortAnimations(this.state.array);
         const length = this.state.array.length;
 
+        console.log(animations);
+
         // Variables used to track the swapped array indices.
-        let swapIndex = length - 1;
+        let swapIndex = 2 * (length - 1);
         let count = 1;
+        
+        let changeColor = true;
 
         for (let i = 0; i < animations.length; i++) {
-            let swap = false;
-            if (i === swapIndex) {
-                swapIndex += length - count++;
+            const arrayBars = document.getElementsByClassName('array-bar');
 
-                
-
-
+            if (i === swapIndex) {                
+                swapIndex += 2 * (length - count++);
+                i++;
 
                 console.log("Swap " + animations[i]);
             } else {
+                const [aIndex, bIndex] = animations[i];
+                const aStyle = arrayBars[aIndex].style;
+                const bStyle = arrayBars[bIndex].style;
 
+                let aColor;
+                let bColor;
 
-
-
-
-
+                if (changeColor) {
+                    console.log("highlight");
+                    aColor = 'green';
+                    bColor = 'blue';
+                    changeColor = false;
+                } else {
+                    console.log("unhighlight");
+                    aColor = 'turquoise';
+                    bColor = 'turquoise';
+                    changeColor = true;
+                }
 
                 console.log("Compare " + animations[i]);
+
+                setTimeout(() => {
+                    aStyle.backgroundColor = aColor;
+                    bStyle.backgroundColor = bColor;
+                }, i * ANIMATION_SPEED_MS);
+
+                
             }
 
-            const arrayBars = document.getElementsByClassName('array-bar');
+
         }
 
     }
