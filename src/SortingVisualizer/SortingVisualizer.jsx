@@ -4,7 +4,7 @@ import * as SelectionSort from '../SortingAlgorithms/SelectionSort.js'
 
 const DEBUG = false;
 
-const ANIMATION_SPEED_MS = 2;
+const ANIMATION_SPEED_MS = 100;
 const PRIMARY_COLOR = 'turquoise';
 
 export default class SortingVisualizer extends React.Component {
@@ -24,7 +24,7 @@ export default class SortingVisualizer extends React.Component {
     // Creates an int array of length ___
     resetArray() {
         const array = [];
-        for (let i = 0; i < 100; i++) {
+        for (let i = 0; i < 10; i++) {
             array.push(randomIntFromInterval(5, 85));
         }
         this.setState({ array });
@@ -39,11 +39,11 @@ export default class SortingVisualizer extends React.Component {
         // Variables used to track the swapped array indices.
         let swapIndex = length - 1;
         let count = 1;
-        
-        let changeColor = true;
 
-        let [aIndexPrev, bIndexPrev] = animations[0];
+        let [aIndexPrev, bIndexPrev] = [length - 1, length - 1];
         for (let i = 0; i < animations.length; i++) {
+            if (DEBUG) console.log("Swap " + animations[i]);
+
             const arrayBars = document.getElementsByClassName('array-bar');
 
             const [aIndex, bIndex] = animations[i];
@@ -53,15 +53,15 @@ export default class SortingVisualizer extends React.Component {
             const aStylePrev = arrayBars[aIndexPrev].style;
             const bStylePrev = arrayBars[bIndexPrev].style;
 
-            if (i === swapIndex) {      
-                if (DEBUG) console.log("Swap " + animations[i]);
-
+            if (i === swapIndex) {
                 swapIndex += length - count++;
 
                 setTimeout(() => {
-                    let temp = aStyle.heigt;
+                    let temp = aStyle.height;
                     aStyle.height = bStyle.height;
                     bStyle.height = temp;
+                    // bStyle.backgroundColor = 'red';
+
                     aStylePrev.backgroundColor = PRIMARY_COLOR;
                     bStylePrev.backgroundColor = PRIMARY_COLOR;
                 }, i * ANIMATION_SPEED_MS);
@@ -74,11 +74,12 @@ export default class SortingVisualizer extends React.Component {
                     bStyle.backgroundColor = 'blue';
                     bStylePrev.backgroundColor = PRIMARY_COLOR;
                 }, i * ANIMATION_SPEED_MS);
+                aIndexPrev = aIndex;
+                bIndexPrev = bIndex;
 
             }
 
-            aIndexPrev = aIndex;
-            bIndexPrev = bIndex;
+
         }
 
     }
