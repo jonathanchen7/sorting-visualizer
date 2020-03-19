@@ -24,7 +24,7 @@ export default class SortingVisualizer extends React.Component {
     // Creates an int array of length ___
     resetArray() {
         const array = [];
-        for (let i = 0; i < 275; i++) {
+        for (let i = 0; i < 100; i++) {
             array.push(randomIntFromInterval(5, 85));
         }
         this.setState({ array });
@@ -53,19 +53,19 @@ export default class SortingVisualizer extends React.Component {
             const aStylePrev = arrayBars[aIndexPrev].style;
             const bStylePrev = arrayBars[bIndexPrev].style;
 
-            if (i === swapIndex) {                
+            if (i === swapIndex) {      
+                if (DEBUG) console.log("Swap " + animations[i]);
+
                 swapIndex += length - count++;
 
                 setTimeout(() => {
-                    let temp = aStyle.height;
+                    let temp = aStyle.heigt;
                     aStyle.height = bStyle.height;
-                    aStyle.backgroundColor = 'red';
                     bStyle.height = temp;
                     aStylePrev.backgroundColor = PRIMARY_COLOR;
                     bStylePrev.backgroundColor = PRIMARY_COLOR;
                 }, i * ANIMATION_SPEED_MS);
 
-                if (DEBUG) console.log("Swap " + animations[i]);
             } else {
                 if (DEBUG) console.log("Compare " + animations[i]);
 
@@ -75,7 +75,6 @@ export default class SortingVisualizer extends React.Component {
                     bStylePrev.backgroundColor = PRIMARY_COLOR;
                 }, i * ANIMATION_SPEED_MS);
 
-                
             }
 
             aIndexPrev = aIndex;
