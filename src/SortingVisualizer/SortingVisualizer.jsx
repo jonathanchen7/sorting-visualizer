@@ -42,16 +42,22 @@ export default class SortingVisualizer extends React.Component {
         for (let i = 0; i < animations.length; i++) {
             const arrayBars = document.getElementsByClassName('array-bar');
 
+            const [aIndex, bIndex] = animations[i];
+            const aStyle = arrayBars[aIndex].style;
+            const bStyle = arrayBars[bIndex].style;
+
             if (i === swapIndex) {                
                 swapIndex += 2 * (length - count++);
                 i++;
 
+                setTimeout(() => {
+                    let temp = aStyle.height;
+                    aStyle.height = bStyle.height;
+                    bStyle.height = temp;
+                }, i * ANIMATION_SPEED_MS);
+
                 console.log("Swap " + animations[i]);
             } else {
-                const [aIndex, bIndex] = animations[i];
-                const aStyle = arrayBars[aIndex].style;
-                const bStyle = arrayBars[bIndex].style;
-
                 let aColor;
                 let bColor;
 
