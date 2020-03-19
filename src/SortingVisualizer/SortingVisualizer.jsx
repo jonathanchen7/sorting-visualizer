@@ -2,9 +2,10 @@ import React from 'react';
 import './SortingVisualizer.css';
 import * as SelectionSort from '../SortingAlgorithms/SelectionSort.js'
 
-const DEBUG = false;
+const DEBUG = true;
 
-const ANIMATION_SPEED_MS = 100;
+const ANIMATION_SPEED_MS = 500;
+const NUM_ARRAY_BARS = 15;
 const PRIMARY_COLOR = 'turquoise';
 
 export default class SortingVisualizer extends React.Component {
@@ -24,9 +25,12 @@ export default class SortingVisualizer extends React.Component {
     // Creates an int array of length ___
     resetArray() {
         const array = [];
-        for (let i = 0; i < 10; i++) {
+
+        const arrayBars = document.getElementsByClassName('array-bar');
+        for (let i = 0; i < NUM_ARRAY_BARS; i++) {
             array.push(randomIntFromInterval(5, 85));
         }
+
         this.setState({ array });
     }
 
@@ -37,49 +41,50 @@ export default class SortingVisualizer extends React.Component {
         if (DEBUG) console.log(animations);
 
         // Variables used to track the swapped array indices.
-        let swapIndex = length - 1;
+        let animationSwapIndex = length - 1;
         let count = 1;
-
         let [aIndexPrev, bIndexPrev] = [length - 1, length - 1];
-        for (let i = 0; i < animations.length; i++) {
-            if (DEBUG) console.log("Swap " + animations[i]);
 
+        let justSwapped = false;
+        for (let i = 0; i < animations.length; i++) {
             const arrayBars = document.getElementsByClassName('array-bar');
 
             const [aIndex, bIndex] = animations[i];
 
             const aStyle = arrayBars[aIndex].style;
             const bStyle = arrayBars[bIndex].style;
+
             const aStylePrev = arrayBars[aIndexPrev].style;
             const bStylePrev = arrayBars[bIndexPrev].style;
 
-            if (i === swapIndex) {
-                swapIndex += length - count++;
+            if (i === animationSwapIndex) {
+                if (DEBUG) console.log("Swap: " + animations[i]);
+                animationSwapIndex += length - count++;
 
                 setTimeout(() => {
                     let temp = aStyle.height;
                     aStyle.height = bStyle.height;
                     bStyle.height = temp;
-                    // bStyle.backgroundColor = 'red';
-
                     aStylePrev.backgroundColor = PRIMARY_COLOR;
                     bStylePrev.backgroundColor = PRIMARY_COLOR;
+                    bStyle.backgroundColor = 'red';
+                    aStyle.backgroundColor = 'blue';
                 }, i * ANIMATION_SPEED_MS);
 
             } else {
-                if (DEBUG) console.log("Compare " + animations[i]);
+                if (DEBUG) console.log("Compare: " + animations[i]);
 
                 setTimeout(() => {
+                    aStylePrev.backgroundColor = PRIMARY_COLOR;
+                    bStylePrev.backgroundColor = PRIMARY_COLOR;
                     aStyle.backgroundColor = 'green';
                     bStyle.backgroundColor = 'blue';
-                    bStylePrev.backgroundColor = PRIMARY_COLOR;
+
                 }, i * ANIMATION_SPEED_MS);
-                aIndexPrev = aIndex;
-                bIndexPrev = bIndex;
 
             }
-
-
+            aIndexPrev = aIndex;
+            bIndexPrev = bIndex;
         }
 
     }
