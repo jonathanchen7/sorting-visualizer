@@ -19,7 +19,7 @@ export default class SortingVisualizer extends React.Component {
     // Creates an int array of length 100 containing numbers between 5-100.
     resetArray() {
         const array = [];
-        for (let i = 0; i < 5; i++) {
+        for (let i = 0; i < 10; i++) {
             array.push(randomIntFromInterval(5, 85));
         }
         this.setState({ array });
@@ -27,37 +27,28 @@ export default class SortingVisualizer extends React.Component {
 
     selectionSort() {
         const animations = sortingAlgorithms.selectionSortAnimations(this.state.array);
+        const length = this.state.array.length;
+
+        let swapIndex = length - 1;
+        let count = 1;
 
         for (let i = 0; i < animations.length; i++) {
+            let swap = false;
+            if (i === swapIndex) {
+                swap = true;
+                swapIndex += length - count;
+                count++;
+                console.log("Swap " + animations[i]);
+            } else {
+                console.log("Compare " + animations[i]);
+            }
+
             const arrayBars = document.getElementsByClassName('array-bar');
-
-            let swap = animations[i][0];
-            let aIndex = animations[i][1];
-            let bIndex = animations[i][2];
-
-            console.log(animations[i]);
-
-            if (swap) {
-                let minIndexStyle = arrayBars[aIndex].style;
-                let swapIndexStyle = arrayBars[bIndex].style;
-                
-                let minIndexHeight = minIndexStyle.height;
-                let swapIndexHeight = swapIndexStyle.height;
-                console.log('minIndexHeight: ' + minIndexHeight + ' swapIndexHeight: ' + swapIndexHeight);
-
-                setTimeout(() => {
-                    swapIndexStyle.backgroundColor = 'red';
-                    swapIndexStyle.height = minIndexHeight;
-                }, i * 300)
-                setTimeout(() => {
-                    swapIndexStyle.backgroundColor = 'blue';
-                }, i * 300)
-            } 
         }
-        const array = sortingAlgorithms.selectionSort(this.state.array.slice());
-        // this.setState({ array });
+
     }
 
+    // Tests the validity of the different sorting algorithms.
     testAlgorithms() {
         for (let i = 0; i < 100; i++) {
             const array = [];
@@ -72,6 +63,7 @@ export default class SortingVisualizer extends React.Component {
 
     }
 
+    // Determines whether two arrays are equal, taking order into account.
     arraysAreEqual(a, b) {
         if (a === b) return true;
         if (a == null || b == null) return false;
