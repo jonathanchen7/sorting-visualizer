@@ -27,14 +27,14 @@ export const selectionSortAnimations = arr => {
         let minIndex = i;
         for (let j = i + 1; j < len; j++) {
             if (arrCopy[minIndex] > arrCopy[j]) {
-                animations.push([0, j, minIndex]);
+                animations.push([j, minIndex]);
                 minIndex = j;
             } else {
-                animations.push([0, minIndex, j]);
+                animations.push([minIndex, j]);
             }
         }
 
-        animations.push([1, minIndex, i]);
+        animations.push([minIndex, i]);
         let temp = arrCopy[minIndex];
         arrCopy[minIndex] = arrCopy[i];
         arrCopy[i] = temp;

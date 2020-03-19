@@ -11,12 +11,12 @@ export default class SortingVisualizer extends React.Component {
         };
     }
 
-    // Runs when the component is initially loaded
+    // Runs when the component is initially loaded.
     componentDidMount() {
         this.resetArray();
     }
 
-    // Creates an int array of length 100 containing numbers between 5-100.
+    // Creates an int array of length ___
     resetArray() {
         const array = [];
         for (let i = 0; i < 10; i++) {
@@ -29,17 +29,28 @@ export default class SortingVisualizer extends React.Component {
         const animations = sortingAlgorithms.selectionSortAnimations(this.state.array);
         const length = this.state.array.length;
 
+        // Variables used to track the swapped array indices.
         let swapIndex = length - 1;
         let count = 1;
 
         for (let i = 0; i < animations.length; i++) {
             let swap = false;
             if (i === swapIndex) {
-                swap = true;
-                swapIndex += length - count;
-                count++;
+                swapIndex += length - count++;
+
+                
+
+
+
                 console.log("Swap " + animations[i]);
             } else {
+
+
+
+
+
+
+
                 console.log("Compare " + animations[i]);
             }
 
@@ -48,8 +59,12 @@ export default class SortingVisualizer extends React.Component {
 
     }
 
-    // Tests the validity of the different sorting algorithms.
+    // Tests the validity of all sorting algorithms.
     testAlgorithms() {
+        /* Creates 100 random arrays of size 1 - 1000 with values ranging from -1000 - 1000, 
+        sorts them using my sorting implementations and JavaScript's built-in sort, and 
+        compares the two resulting arrays.
+        */
         for (let i = 0; i < 100; i++) {
             const array = [];
             const len = randomIntFromInterval(1, 1000);
@@ -96,7 +111,7 @@ export default class SortingVisualizer extends React.Component {
     }
 }
 
+// Generates a random integer from the given interval (inclusive min/max).
 function randomIntFromInterval(min, max) {
-    // Inclusive min and max
     return Math.floor(Math.random() * (max - min + 1) + min);
 }
