@@ -4,9 +4,9 @@ import * as SelectionSort from '../SortingAlgorithms/SelectionSort.js'
 
 const DEBUG = true;
 
-const ANIMATION_SPEED_MS = 500;
+const ANIMATION_SPEED_MS = 400;
 const NUM_ARRAY_BARS = 15;
-const PRIMARY_COLOR = 'turquoise';
+const PRIMARY_COLOR = '#484f8f';
 
 export default class SortingVisualizer extends React.Component {
     constructor(props) {
@@ -28,7 +28,7 @@ export default class SortingVisualizer extends React.Component {
 
         const arrayBars = document.getElementsByClassName('array-bar');
         for (let i = 0; i < NUM_ARRAY_BARS; i++) {
-            array.push(randomIntFromInterval(5, 85));
+            array.push(randomIntFromInterval(5, 75));
         }
 
         this.setState({ array });
@@ -45,7 +45,6 @@ export default class SortingVisualizer extends React.Component {
         let count = 1;
         let [aIndexPrev, bIndexPrev] = [length - 1, length - 1];
 
-        let justSwapped = false;
         for (let i = 0; i < animations.length; i++) {
             const arrayBars = document.getElementsByClassName('array-bar');
 
@@ -67,8 +66,8 @@ export default class SortingVisualizer extends React.Component {
                     bStyle.height = temp;
                     aStylePrev.backgroundColor = PRIMARY_COLOR;
                     bStylePrev.backgroundColor = PRIMARY_COLOR;
-                    bStyle.backgroundColor = 'red';
-                    aStyle.backgroundColor = 'blue';
+                    // bStyle.backgroundColor = 'red';
+                    // aStyle.backgroundColor = 'blue';
                 }, i * ANIMATION_SPEED_MS);
 
             } else {
