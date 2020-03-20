@@ -2,7 +2,7 @@ import React from 'react';
 import './SortingVisualizer.css';
 import * as SelectionSort from '../SortingAlgorithms/SelectionSort.js'
 
-const DEBUG = true;
+const DEBUG = false;
 
 const ANIMATION_SPEED_MS = 100;
 const NUM_ARRAY_BARS = 15;
@@ -35,6 +35,14 @@ export default class SortingVisualizer extends React.Component {
     }
 
     selectionSort() {
+        // Temporarily disables buttons until sorting is complete.
+        const buttons = document.getElementsByTagName('button');
+
+        for (let i = 0; i < buttons.length; i++) {
+            const button = buttons[i];
+            button.disabled = true;
+        }
+
         const animations = SelectionSort.sortingAnimations(this.state.array);
         const length = this.state.array.length;
 
@@ -85,6 +93,13 @@ export default class SortingVisualizer extends React.Component {
             aIndexPrev = aIndex;
             bIndexPrev = bIndex;
         }
+
+        setTimeout(() => {
+            for (let i = 0; i < buttons.length; i++) {
+                const button = buttons[i];
+                button.disabled = false;
+            }
+        }, animations.length * ANIMATION_SPEED_MS);
 
     }
 
@@ -139,13 +154,13 @@ export default class SortingVisualizer extends React.Component {
                         ></div>
                     ))}
                 </div>
-                <div className="sorting-buttons">
-                    <button onClick={() => this.selectionSort()}>bubble</button>
-                    <button onClick={() => this.selectionSort()}>insertion</button>
-                    <button onClick={() => this.selectionSort()}>selection</button>
-                    <button onClick={() => this.selectionSort()}>heap</button>
-                    <button onClick={() => this.selectionSort()}>quick</button>
-                    <button id="sort-button" onClick={() => this.selectionSort()}>sort!</button>
+                <div>
+                    <button className="bottom-button" onClick={() => this.selectionSort()}>bubble</button>
+                    <button className="bottom-button" onClick={() => this.selectionSort()}>insertion</button>
+                    <button className="bottom-button" onClick={() => this.selectionSort(this)}>selection</button>
+                    <button className="bottom-button" onClick={() => this.selectionSort()}>heap</button>
+                    <button className="bottom-button" onClick={() => this.selectionSort()}>quick</button>
+                    <button className="bottom-button" id="sort-button" onClick={() => this.selectionSort()}>sort!</button>
 
                     {/* <button onClick={() => this.testAlgorithms()}>Test Algorithms</button> */}
                 </div>
