@@ -23,6 +23,14 @@ button {
     margin: 15px;
     border-radius: 3px;
     font-size: 17px;
+    transition: all 0.2s;
+}
+
+button:hover {
+    background-color: white;
+    border: 3px solid #488F4B;
+    color: #488F4B;
+    cursor: pointer;
 }
 
 .array-container {
@@ -35,6 +43,7 @@ button {
     background-color: #484f8f;
     display: inline-block;
     margin: .25vw;
+    border-bottom: 5px solid #488F4B;
 }
 
 .center-button {
