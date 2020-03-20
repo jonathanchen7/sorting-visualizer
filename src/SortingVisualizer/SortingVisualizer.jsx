@@ -123,18 +123,23 @@ export default class SortingVisualizer extends React.Component {
         const { array } = this.state;
 
         return (
-            <div className="array-container">
-                {array.map((value, idx) => (
-                    <div
-                        className="array-bar"
-                        key={idx}
-                        style={{ height: `${value}vh` }}
-                    ></div>
-                ))}
-                <br></br>
-                <button onClick={() => this.resetArray()}>Generate New Array</button>
-                <button onClick={() => this.selectionSort()}>Selection Sort</button>
-                <button onClick={() => this.testAlgorithms()}>Test Sorting Algorithms</button>
+            <div>
+                <header>
+                    <div id="title">sorting visualizer</div>
+                </header>
+                <div className="array-container">
+                    {array.map((value, idx) => (
+                        <div
+                            className="array-bar"
+                            key={idx}
+                            style={{ height: `${value}vh` }}
+                        ></div>
+                    ))}
+                    <br></br>
+                    <button onClick={() => this.resetArray()}>Generate New Array</button>
+                    <button onClick={() => this.selectionSort()}>Selection Sort</button>
+                    <button onClick={() => this.testAlgorithms()}>Test Sorting Algorithms</button>
+                </div>
             </div>
         );
     }
