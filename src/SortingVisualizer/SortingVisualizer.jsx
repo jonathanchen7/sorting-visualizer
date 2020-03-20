@@ -4,9 +4,11 @@ import * as SelectionSort from '../SortingAlgorithms/SelectionSort.js'
 
 const DEBUG = false;
 
-const ANIMATION_SPEED_MS = 100;
+const ANIMATION_SPEED_MS = 50;
 const NUM_ARRAY_BARS = 15;
 const PRIMARY_COLOR = '#484f8f';
+
+var currentSort = null;
 
 export default class SortingVisualizer extends React.Component {
     constructor(props) {
@@ -34,17 +36,26 @@ export default class SortingVisualizer extends React.Component {
         this.setState({ array });
     }
 
+    // Handles animations for Bubble Sort.
+    bubbleSort() {
+
+    }
+
+    // Handles animations for Insertion Sort.
+    insertionSort() {
+
+    }
+
+    // Handles animations for Selection Sort.
     selectionSort() {
-        // Temporarily disables buttons until sorting is complete.
-        const buttons = document.getElementsByTagName('button');
+        const results = SelectionSort.sortingAnimations(this.state.array);
 
-        for (let i = 0; i < buttons.length; i++) {
-            const button = buttons[i];
-            button.disabled = true;
-        }
+        const animations = results[0];
+        const sortedArray = results[1];
+        const length = sortedArray.length;
 
-        const animations = SelectionSort.sortingAnimations(this.state.array);
-        const length = this.state.array.length;
+        this.disableButtons(animations.length);
+        this.updateArrayState(sortedArray, animations.length)
 
         if (DEBUG) console.log(animations);
 
@@ -86,12 +97,33 @@ export default class SortingVisualizer extends React.Component {
                     bStylePrev.backgroundColor = PRIMARY_COLOR;
                     aStyle.backgroundColor = 'green';
                     bStyle.backgroundColor = 'blue';
-
                 }, i * ANIMATION_SPEED_MS);
 
             }
             aIndexPrev = aIndex;
             bIndexPrev = bIndex;
+        }
+        
+        
+    }
+
+    // Handles animations for Heap Sort.
+    heapSort() {
+
+    }
+
+    // Handles animations for Quick Sort.
+    quickSort() {
+
+    }
+
+    // Temporarily disables buttons until sorting is complete.
+    disableButtons(numAnimations) {
+        const buttons = document.getElementsByTagName('button');
+
+        for (let i = 0; i < buttons.length; i++) {
+            const button = buttons[i];
+            button.disabled = true;
         }
 
         setTimeout(() => {
@@ -99,8 +131,14 @@ export default class SortingVisualizer extends React.Component {
                 const button = buttons[i];
                 button.disabled = false;
             }
-        }, animations.length * ANIMATION_SPEED_MS);
+        }, numAnimations * ANIMATION_SPEED_MS);
+    }
 
+    // Updates the state once all animations have finished.
+    updateArrayState(sortedArray, numAnimations) {
+        setTimeout(() => {
+            this.setState({ array: sortedArray });
+        }, numAnimations * ANIMATION_SPEED_MS);
     }
 
     // Tests the validity of all sorting algorithms.
@@ -155,14 +193,14 @@ export default class SortingVisualizer extends React.Component {
                     ))}
                 </div>
                 <div>
-                    <button className="bottom-button" onClick={() => this.selectionSort()}>bubble</button>
-                    <button className="bottom-button" onClick={() => this.selectionSort()}>insertion</button>
-                    <button className="bottom-button" onClick={() => this.selectionSort(this)}>selection</button>
-                    <button className="bottom-button" onClick={() => this.selectionSort()}>heap</button>
-                    <button className="bottom-button" onClick={() => this.selectionSort()}>quick</button>
-                    <button className="bottom-button" id="sort-button" onClick={() => this.selectionSort()}>sort!</button>
+                    <button className="bottom-button" onClick={() => this.bubbleSort()}>bubble</button>
+                    <button className="bottom-button" onClick={() => this.insertionSort()}>insertion</button>
+                    <button className="bottom-button" onClick={() => this.selectionSort()}>selection</button>
+                    <button className="bottom-button" onClick={() => this.heapSort()}>heap</button>
+                    <button className="bottom-button" onClick={() => this.quickSort()}>quick</button>
+                    <button className="bottom-button" id="sort-button" onClick={() => alert("Not implemented yet!")}>sort!</button>
 
-                    {/* <button onClick={() => this.testAlgorithms()}>Test Algorithms</button> */}
+                    {/* <button onClick={() => this.testAlgorithms()}>test algos</button> */}
                 </div>
             </div>
         );

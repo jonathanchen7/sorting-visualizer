@@ -45,5 +45,8 @@ export const sortingAnimations = arr => {
 
     }
 
-    return animations;
+    return [
+        animations,
+        arrCopy
+    ];
 };
