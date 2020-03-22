@@ -1,12 +1,18 @@
 import React from 'react';
 import './SortingVisualizer.css';
-import * as SelectionSort from '../SortingAlgorithms/SelectionSort.js'
+import * as SortingAlgorithms from '../SortingAlgorithms/SortingAlgorithms.js'
 
 const DEBUG = false;
 
 const ANIMATION_SPEED_MS = 50;
 const NUM_ARRAY_BARS = 15;
 const PRIMARY_COLOR = '#484f8f';
+const HIGHER_NUM_COLOR = 'red';
+const LOWER_NUM_COLOR = 'green';
+const SORTED_COLOR = 'black';
+
+// const PRIMARY_COLOR = '#989dca';
+
 
 var currentSort = null;
 
@@ -43,12 +49,13 @@ export default class SortingVisualizer extends React.Component {
 
     // Handles animations for Insertion Sort.
     insertionSort() {
-
+        const results = SortingAlgorithms.insertionSort(this.state.array);
+        console.log(results);
     }
 
     // Handles animations for Selection Sort.
     selectionSort() {
-        const results = SelectionSort.sortingAnimations(this.state.array);
+        const results = SortingAlgorithms.selectionSort(this.state.array);
 
         const animations = results[0];
         const sortedArray = results[1];
@@ -85,7 +92,7 @@ export default class SortingVisualizer extends React.Component {
                     bStyle.height = temp;
                     aStylePrev.backgroundColor = PRIMARY_COLOR;
                     bStylePrev.backgroundColor = PRIMARY_COLOR;
-                    // bStyle.backgroundColor = 'red';
+                    // bStyle.backgroundColor = SORTED_COLOR;
                     // aStyle.backgroundColor = 'blue';
                 }, i * ANIMATION_SPEED_MS);
 
@@ -95,16 +102,16 @@ export default class SortingVisualizer extends React.Component {
                 setTimeout(() => {
                     aStylePrev.backgroundColor = PRIMARY_COLOR;
                     bStylePrev.backgroundColor = PRIMARY_COLOR;
-                    aStyle.backgroundColor = 'green';
-                    bStyle.backgroundColor = 'blue';
+                    aStyle.backgroundColor = LOWER_NUM_COLOR;
+                    bStyle.backgroundColor = HIGHER_NUM_COLOR;
                 }, i * ANIMATION_SPEED_MS);
 
             }
             aIndexPrev = aIndex;
             bIndexPrev = bIndex;
         }
-        
-        
+
+
     }
 
     // Handles animations for Heap Sort.
@@ -147,16 +154,29 @@ export default class SortingVisualizer extends React.Component {
         sorts them using my sorting implementations and JavaScript's built-in sort, and 
         compares the two resulting arrays.
         */
+        const testArrays = [];
         for (let i = 0; i < 100; i++) {
-            const array = [];
+            let array = [];
             const len = randomIntFromInterval(1, 1000);
             for (let j = 0; j < len; j++) {
                 array.push(randomIntFromInterval(-1000, 1000));
             }
-            const javaScriptSort = array.slice().sort((a, b) => a - b);
-            const selectionSortArray = SelectionSort.sort(array.slice());
+            testArrays[i] = array;
+        }
+
+        for (let i = 0; i < 100; i++) {
+            const javaScriptSort = testArrays[i].slice().sort((a, b) => a - b);
+            const selectionSortArray = SortingAlgorithms.selectionSort(testArrays[i].slice())[1];
             console.log("Selection Sort: " + this.arraysAreEqual(javaScriptSort, selectionSortArray));
         }
+
+        for (let i = 0; i < 100; i++) {
+            const javaScriptSort = testArrays[i].slice().sort((a, b) => a - b);
+            const insertionSortArray = SortingAlgorithms.insertionSort(testArrays[i].slice())[1];
+            console.log("Insertion Sort: " + this.arraysAreEqual(javaScriptSort, insertionSortArray));
+        }
+
+
 
     }
 
@@ -182,6 +202,7 @@ export default class SortingVisualizer extends React.Component {
                 </header>
                 <div>
                     <button className="center-button" onClick={() => this.resetArray()}>generate new array</button>
+                    {/* <button className="center-button" onClick={() => this.testAlgorithms()}>test algorithms</button> */}
                 </div>
                 <div className="array-container">
                     {array.map((value, idx) => (
@@ -199,8 +220,6 @@ export default class SortingVisualizer extends React.Component {
                     <button className="bottom-button" onClick={() => this.heapSort()}>heap</button>
                     <button className="bottom-button" onClick={() => this.quickSort()}>quick</button>
                     <button className="bottom-button" id="sort-button" onClick={() => alert("Not implemented yet!")}>sort!</button>
-
-                    {/* <button onClick={() => this.testAlgorithms()}>test algos</button> */}
                 </div>
             </div>
         );
