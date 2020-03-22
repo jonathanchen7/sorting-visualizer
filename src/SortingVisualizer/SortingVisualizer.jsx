@@ -4,12 +4,12 @@ import * as SortingAlgorithms from '../SortingAlgorithms/SortingAlgorithms.js'
 
 const DEBUG = false;
 
-const ANIMATION_SPEED_MS = 1000;
-const NUM_ARRAY_BARS = 5;
+const ANIMATION_SPEED_MS = 100;
+const NUM_ARRAY_BARS = 15;
 const PRIMARY_COLOR = '#484f8f';
 const HIGHER_NUM_COLOR = 'red';
 const LOWER_NUM_COLOR = 'green';
-const SORTED_COLOR = 'black';
+const SORTED_COLOR = 'grey';
 
 // const PRIMARY_COLOR = '#989dca';
 
@@ -53,6 +53,9 @@ export default class SortingVisualizer extends React.Component {
         const animations = results[0];
         const sortedArray = results[1];
 
+        this.disableButtons(animations.length);
+        this.updateArrayState(sortedArray, animations.length);
+
         let [aIndexPrev, bIndexPrev] = [NUM_ARRAY_BARS - 1, NUM_ARRAY_BARS - 1];
 
         for (let i = 0; i < animations.length; i++) {
@@ -82,8 +85,12 @@ export default class SortingVisualizer extends React.Component {
                 setTimeout(() => {
                     aStylePrev.backgroundColor = PRIMARY_COLOR;
                     bStylePrev.backgroundColor = PRIMARY_COLOR;
-                    aStyle.backgroundColor = LOWER_NUM_COLOR;
-                    bStyle.backgroundColor = HIGHER_NUM_COLOR;
+                    aStyle.backgroundColor = SORTED_COLOR;
+                    bStyle.backgroundColor = SORTED_COLOR;
+                    
+                    let temp = aStyle.height;
+                    aStyle.height = bStyle.height;
+                    bStyle.height = temp;
                 }, i * ANIMATION_SPEED_MS);
             }
 
@@ -91,8 +98,13 @@ export default class SortingVisualizer extends React.Component {
             bIndexPrev = bIndex;
         }
 
+        const arrayBars = document.getElementsByClassName('array-bar');
+        setTimeout(() => {
+            for (let i = 0; i < arrayBars.length; i++) {
+                arrayBars[i].style.backgroundColor = PRIMARY_COLOR;
+            }
+        }, animations.length * ANIMATION_SPEED_MS);
 
-        console.log(results);
     }
 
     // Handles animations for Selection Sort.
@@ -104,7 +116,7 @@ export default class SortingVisualizer extends React.Component {
         const length = sortedArray.length; // maybe replace with NUM_ARRAY_BARS?
 
         this.disableButtons(animations.length);
-        this.updateArrayState(sortedArray, animations.length)
+        this.updateArrayState(sortedArray, animations.length);
 
         if (DEBUG) console.log(animations);
 

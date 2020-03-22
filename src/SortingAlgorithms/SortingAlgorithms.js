@@ -21,7 +21,6 @@ export const selectionSort = arr => {
         let temp = arrCopy[minIndex];
         arrCopy[minIndex] = arrCopy[i];
         arrCopy[i] = temp;
-
     }
 
     return [
@@ -41,7 +40,7 @@ export const insertionSort = arr => {
         animations.push([-1, i, i]);
         let currentIndex = i;
         // Shifts the values in the array until the current value is sorted.
-        while (currentIndex - 1 >= 0 && arrCopy[currentIndex] <= arrCopy[currentIndex - 1]) {
+        while (currentIndex - 1 >= 0 && arrCopy[currentIndex] < arrCopy[currentIndex - 1]) {
             animations.push([0, currentIndex, currentIndex - 1]);
             animations.push([1, currentIndex, currentIndex - 1]);
             let temp = arrCopy[currentIndex];
