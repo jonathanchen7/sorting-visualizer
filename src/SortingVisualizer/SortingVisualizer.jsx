@@ -5,7 +5,7 @@ import * as SortingAlgorithms from '../SortingAlgorithms/SortingAlgorithms.js'
 const DEBUG = false;
 
 const ANIMATION_SPEED_MS = 50;
-const NUM_ARRAY_BARS = 15;
+const NUM_ARRAY_BARS = 5;
 const PRIMARY_COLOR = '#484f8f';
 const HIGHER_NUM_COLOR = 'red';
 const LOWER_NUM_COLOR = 'green';
@@ -50,6 +50,10 @@ export default class SortingVisualizer extends React.Component {
     // Handles animations for Insertion Sort.
     insertionSort() {
         const results = SortingAlgorithms.insertionSort(this.state.array);
+        const anmations = results[0];
+        const sortedArray = results[1];
+        const length = sortedArray.length;
+
         console.log(results);
     }
 
@@ -59,7 +63,7 @@ export default class SortingVisualizer extends React.Component {
 
         const animations = results[0];
         const sortedArray = results[1];
-        const length = sortedArray.length;
+        const length = sortedArray.length; // maybe replace with NUM_ARRAY_BARS?
 
         this.disableButtons(animations.length);
         this.updateArrayState(sortedArray, animations.length)

@@ -42,13 +42,15 @@ export const insertionSort = arr => {
         let currentIndex = i;
         // Shifts the values in the array until the current value is sorted.
         while (currentIndex - 1 >= 0 && arrCopy[currentIndex] <= arrCopy[currentIndex - 1]) {
+            animations.push([0, currentIndex, currentIndex - 1]);
+            animations.push([1, currentIndex, currentIndex - 1]);
             let temp = arrCopy[currentIndex];
             arrCopy[currentIndex] = arrCopy[currentIndex - 1];
             arrCopy[currentIndex - 1] = temp;
             currentIndex--;
-        } 
+        }
     }
-    
+
     return [
         animations,
         arrCopy
