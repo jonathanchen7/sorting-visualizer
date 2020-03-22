@@ -10,14 +10,14 @@ export const selectionSort = arr => {
         lower value as the first index in the pair.*/
         for (let j = i + 1; j < len; j++) {
             if (arrCopy[minIndex] > arrCopy[j]) {
-                animations.push([j, minIndex]);
+                animations.push([0, j, minIndex]);
                 minIndex = j;
             } else {
-                animations.push([minIndex, j]);
+                animations.push([0, minIndex, j]);
             }
         }
 
-        animations.push([minIndex, i]);
+        animations.push([1, minIndex, i]);
         let temp = arrCopy[minIndex];
         arrCopy[minIndex] = arrCopy[i];
         arrCopy[i] = temp;

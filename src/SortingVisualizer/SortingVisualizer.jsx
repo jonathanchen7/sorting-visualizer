@@ -4,15 +4,15 @@ import * as SortingAlgorithms from '../SortingAlgorithms/SortingAlgorithms.js'
 
 const DEBUG = false;
 
-const ANIMATION_SPEED_MS = 300;
+const ANIMATION_SPEED_MS = 500;
 const NUM_ARRAY_BARS = 15;
 
 // Colors used in the sorting visualizer.
 const PRIMARY_COLOR = '#484f8f';
-const CURRENT_COMPARISON = ''
+const CURRENT_COMPARISON = 'TURQUOISE';
 const HIGHER_NUM_COLOR = 'red';
 const LOWER_NUM_COLOR = 'green';
-const SORTED_COLOR = 'grey';
+const SORTED_COLOR = 'TURQUOISE';
 
 // const PRIMARY_COLOR = '#989dca';
 
@@ -119,14 +119,12 @@ export default class SortingVisualizer extends React.Component {
         if (DEBUG) console.log(animations);
 
         // Variables used to track the swapped array indices.
-        let animationSwapIndex = length - 1;
-        let count = 1;
         let [aIndexPrev, bIndexPrev] = [length - 1, length - 1];
 
         for (let i = 0; i < animations.length; i++) {
             const arrayBars = document.getElementsByClassName('array-bar');
 
-            const [aIndex, bIndex] = animations[i];
+            const [swap, aIndex, bIndex] = animations[i];
 
             const aStyle = arrayBars[aIndex].style;
             const bStyle = arrayBars[bIndex].style;
@@ -134,9 +132,8 @@ export default class SortingVisualizer extends React.Component {
             const aStylePrev = arrayBars[aIndexPrev].style;
             const bStylePrev = arrayBars[bIndexPrev].style;
 
-            if (i === animationSwapIndex) {
+            if (swap) {
                 if (DEBUG) console.log("Swap: " + animations[i]);
-                animationSwapIndex += length - count++;
 
                 setTimeout(() => {
                     let temp = aStyle.height;
