@@ -4,12 +4,12 @@ import * as SortingAlgorithms from '../SortingAlgorithms/SortingAlgorithms.js'
 
 const DEBUG = false;
 
-const ANIMATION_SPEED_MS = 500;
+const ANIMATION_SPEED_MS = 200;
 const NUM_ARRAY_BARS = 15;
 
 // Colors used in the sorting visualizer.
 const PRIMARY_COLOR = '#484f8f';
-const CURRENT_COMPARISON = 'TURQUOISE';
+const CURRENT_COMPARISON = 'turquoise';
 const HIGHER_NUM_COLOR = 'red';
 const LOWER_NUM_COLOR = 'green';
 const SORTED_COLOR = 'TURQUOISE';
@@ -78,6 +78,13 @@ export default class SortingVisualizer extends React.Component {
                 setTimeout(() => {
                     aStylePrev.backgroundColor = PRIMARY_COLOR;
                     bStylePrev.backgroundColor = PRIMARY_COLOR;
+                    aStyle.backgroundColor = CURRENT_COMPARISON;
+                    bStyle.backgroundColor = CURRENT_COMPARISON;
+                }, i * ANIMATION_SPEED_MS);
+            } else if (swap === 1) {
+                setTimeout(() => {
+                    aStylePrev.backgroundColor = PRIMARY_COLOR;
+                    bStylePrev.backgroundColor = PRIMARY_COLOR;
                     aStyle.backgroundColor = LOWER_NUM_COLOR;
                     bStyle.backgroundColor = HIGHER_NUM_COLOR;
                 }, i * ANIMATION_SPEED_MS);
@@ -85,7 +92,7 @@ export default class SortingVisualizer extends React.Component {
                 setTimeout(() => {
                     aStyle.backgroundColor = HIGHER_NUM_COLOR;
                     bStyle.backgroundColor = LOWER_NUM_COLOR;
-                    
+
                     let temp = aStyle.height;
                     aStyle.height = bStyle.height;
                     bStyle.height = temp;
@@ -125,6 +132,7 @@ export default class SortingVisualizer extends React.Component {
             const arrayBars = document.getElementsByClassName('array-bar');
 
             const [swap, aIndex, bIndex] = animations[i];
+            console.log(animations[i]);
 
             const aStyle = arrayBars[aIndex].style;
             const bStyle = arrayBars[bIndex].style;
@@ -151,8 +159,9 @@ export default class SortingVisualizer extends React.Component {
                 setTimeout(() => {
                     aStylePrev.backgroundColor = PRIMARY_COLOR;
                     bStylePrev.backgroundColor = PRIMARY_COLOR;
-                    aStyle.backgroundColor = LOWER_NUM_COLOR;
+
                     bStyle.backgroundColor = HIGHER_NUM_COLOR;
+                    aStyle.backgroundColor = LOWER_NUM_COLOR;
                 }, i * ANIMATION_SPEED_MS);
 
             }

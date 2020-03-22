@@ -17,6 +17,7 @@ export const selectionSort = arr => {
             }
         }
 
+        animations.push([0, minIndex, i]);
         animations.push([1, minIndex, i]);
         let temp = arrCopy[minIndex];
         arrCopy[minIndex] = arrCopy[i];
@@ -43,6 +44,7 @@ export const insertionSort = arr => {
         while (currentIndex - 1 >= 0 && arrCopy[currentIndex] < arrCopy[currentIndex - 1]) {
             animations.push([0, currentIndex, currentIndex - 1]);
             animations.push([1, currentIndex, currentIndex - 1]);
+            animations.push([2, currentIndex, currentIndex - 1]);
             let temp = arrCopy[currentIndex];
             arrCopy[currentIndex] = arrCopy[currentIndex - 1];
             arrCopy[currentIndex - 1] = temp;
