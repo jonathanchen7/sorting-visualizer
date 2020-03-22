@@ -38,7 +38,7 @@ export const insertionSort = arr => {
 
     // Iterates through all values of the array (excluding the first index).
     for (let i = 1; i < len; i++) {
-        animations.push([0, i]);
+        animations.push([-1, i, i]);
         let currentIndex = i;
         // Shifts the values in the array until the current value is sorted.
         while (currentIndex - 1 >= 0 && arrCopy[currentIndex] <= arrCopy[currentIndex - 1]) {

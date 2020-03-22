@@ -4,7 +4,7 @@ import * as SortingAlgorithms from '../SortingAlgorithms/SortingAlgorithms.js'
 
 const DEBUG = false;
 
-const ANIMATION_SPEED_MS = 50;
+const ANIMATION_SPEED_MS = 1000;
 const NUM_ARRAY_BARS = 5;
 const PRIMARY_COLOR = '#484f8f';
 const HIGHER_NUM_COLOR = 'red';
@@ -50,9 +50,47 @@ export default class SortingVisualizer extends React.Component {
     // Handles animations for Insertion Sort.
     insertionSort() {
         const results = SortingAlgorithms.insertionSort(this.state.array);
-        const anmations = results[0];
+        const animations = results[0];
         const sortedArray = results[1];
-        const length = sortedArray.length;
+
+        let [aIndexPrev, bIndexPrev] = [NUM_ARRAY_BARS - 1, NUM_ARRAY_BARS - 1];
+
+        for (let i = 0; i < animations.length; i++) {
+            const arrayBars = document.getElementsByClassName('array-bar');
+
+            const [swap, aIndex, bIndex] = animations[i];
+            const aStyle = arrayBars[aIndex].style;
+            const bStyle = arrayBars[bIndex].style;
+
+            const aStylePrev = arrayBars[aIndexPrev].style;
+            const bStylePrev = arrayBars[bIndexPrev].style;
+
+            if (swap === -1) {
+                setTimeout(() => {
+                    aStylePrev.backgroundColor = PRIMARY_COLOR;
+                    bStylePrev.backgroundColor = PRIMARY_COLOR;
+                    aStyle.backgroundColor = 'yellow';
+                }, i * ANIMATION_SPEED_MS);
+            } else if (swap === 0) {
+                setTimeout(() => {
+                    aStylePrev.backgroundColor = PRIMARY_COLOR;
+                    bStylePrev.backgroundColor = PRIMARY_COLOR;
+                    aStyle.backgroundColor = LOWER_NUM_COLOR;
+                    bStyle.backgroundColor = HIGHER_NUM_COLOR;
+                }, i * ANIMATION_SPEED_MS);
+            } else {
+                setTimeout(() => {
+                    aStylePrev.backgroundColor = PRIMARY_COLOR;
+                    bStylePrev.backgroundColor = PRIMARY_COLOR;
+                    aStyle.backgroundColor = LOWER_NUM_COLOR;
+                    bStyle.backgroundColor = HIGHER_NUM_COLOR;
+                }, i * ANIMATION_SPEED_MS);
+            }
+
+            aIndexPrev = aIndex;
+            bIndexPrev = bIndex;
+        }
+
 
         console.log(results);
     }
