@@ -9,10 +9,10 @@ const NUM_ARRAY_BARS = 15;
 
 // Colors used in the sorting visualizer.
 const PRIMARY_COLOR = '#484f8f';
-const CURRENT_COMPARISON = 'turquoise';
+const CURRENT_COMPARISON = '#484f8f';
 const HIGHER_NUM_COLOR = 'red';
 const LOWER_NUM_COLOR = 'green';
-const SORTED_COLOR = 'TURQUOISE';
+const SORTED_COLOR = '#90ee90';
 
 // const PRIMARY_COLOR = '#989dca';
 
@@ -34,7 +34,6 @@ export default class SortingVisualizer extends React.Component {
     resetArray() {
         const array = [];
 
-        const arrayBars = document.getElementsByClassName('array-bar');
         for (let i = 0; i < NUM_ARRAY_BARS; i++) {
             array.push(randomIntFromInterval(5, 65));
         }
@@ -101,6 +100,7 @@ export default class SortingVisualizer extends React.Component {
 
             aIndexPrev = aIndex;
             bIndexPrev = bIndex;
+            
         }
 
         const arrayBars = document.getElementsByClassName('array-bar');
@@ -144,13 +144,11 @@ export default class SortingVisualizer extends React.Component {
                 if (DEBUG) console.log("Swap: " + animations[i]);
 
                 setTimeout(() => {
+                    aStylePrev.backgroundColor = PRIMARY_COLOR;
+                    bStylePrev.backgroundColor = PRIMARY_COLOR;
                     let temp = aStyle.height;
                     aStyle.height = bStyle.height;
                     bStyle.height = temp;
-                    aStylePrev.backgroundColor = PRIMARY_COLOR;
-                    bStylePrev.backgroundColor = PRIMARY_COLOR;
-                    // bStyle.backgroundColor = SORTED_COLOR;
-                    // aStyle.backgroundColor = 'blue';
                 }, i * ANIMATION_SPEED_MS);
 
             } else {
@@ -234,8 +232,11 @@ export default class SortingVisualizer extends React.Component {
             console.log("Insertion Sort: " + this.arraysAreEqual(javaScriptSort, insertionSortArray));
         }
 
-
-
+        for (let i = 0; i < 100; i++) {
+            const javaScriptSort = testArrays[i].slice().sort((a, b) => a - b);
+            const insertionSortArray = SortingAlgorithms.insertionSort(testArrays[i].slice())[1];
+            console.log("Insertion Sort: " + this.arraysAreEqual(javaScriptSort, insertionSortArray));
+        }
     }
 
     // Determines whether two arrays are equal, taking order into account.

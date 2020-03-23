@@ -1,3 +1,49 @@
+// Bubble Sort implementation.
+export const bubbleSort = arr => {
+    const animations = [];
+    const arrCopy = arr.slice();
+    let len = arrCopy.length;
+
+    for (let i = 0; i < len - 1; i++) {
+        for (let j = 0; j < len - 1 - i; j++) {
+            if (arr[j] > arr[j + 1]) {
+                let temp = arr[j];
+                arr[j] = arr[j + 1];
+                arr[j + 1] = temp;
+            }
+        }
+    }
+
+}
+
+// Insertion Sort implementation.
+export const insertionSort = arr => {
+    const animations = [];
+    const arrCopy = arr.slice();
+    let len = arrCopy.length;
+
+    // Iterates through all values of the array (excluding the first index).
+    for (let i = 1; i < len; i++) {
+        animations.push([-1, i, i]);
+        let currentIndex = i;
+        // Shifts the values in the array until the current value is sorted.
+        while (currentIndex - 1 >= 0 && arrCopy[currentIndex] < arrCopy[currentIndex - 1]) {
+            animations.push([0, currentIndex, currentIndex - 1]);
+            animations.push([1, currentIndex, currentIndex - 1]);
+            animations.push([2, currentIndex, currentIndex - 1]);
+            let temp = arrCopy[currentIndex];
+            arrCopy[currentIndex] = arrCopy[currentIndex - 1];
+            arrCopy[currentIndex - 1] = temp;
+            currentIndex--;
+        }
+    }
+
+    return [
+        animations,
+        arrCopy
+    ];
+};
+
 // Selection Sort implementation that returns both an array of animations + the sorted array.
 export const selectionSort = arr => {
     const animations = [];
@@ -22,34 +68,6 @@ export const selectionSort = arr => {
         let temp = arrCopy[minIndex];
         arrCopy[minIndex] = arrCopy[i];
         arrCopy[i] = temp;
-    }
-
-    return [
-        animations,
-        arrCopy
-    ];
-};
-
-// Insertion Sort implementation.
-export const insertionSort = arr => {
-    const animations = [];
-    const arrCopy = arr.slice();
-    let len = arrCopy.length;
-
-    // Iterates through all values of the array (excluding the first index).
-    for (let i = 1; i < len; i++) {
-        animations.push([-1, i, i]);
-        let currentIndex = i;
-        // Shifts the values in the array until the current value is sorted.
-        while (currentIndex - 1 >= 0 && arrCopy[currentIndex] < arrCopy[currentIndex - 1]) {
-            animations.push([0, currentIndex, currentIndex - 1]);
-            animations.push([1, currentIndex, currentIndex - 1]);
-            animations.push([2, currentIndex, currentIndex - 1]);
-            let temp = arrCopy[currentIndex];
-            arrCopy[currentIndex] = arrCopy[currentIndex - 1];
-            arrCopy[currentIndex - 1] = temp;
-            currentIndex--;
-        }
     }
 
     return [
