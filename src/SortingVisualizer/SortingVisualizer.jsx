@@ -234,8 +234,8 @@ export default class SortingVisualizer extends React.Component {
 
         for (let i = 0; i < 100; i++) {
             const javaScriptSort = testArrays[i].slice().sort((a, b) => a - b);
-            const insertionSortArray = SortingAlgorithms.insertionSort(testArrays[i].slice())[1];
-            console.log("Insertion Sort: " + this.arraysAreEqual(javaScriptSort, insertionSortArray));
+            const bubbleSortArray = SortingAlgorithms.bubbleSort(testArrays[i].slice())[1];
+            console.log("Bubble Sort: " + this.arraysAreEqual(javaScriptSort, bubbleSortArray));
         }
     }
 
