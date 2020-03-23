@@ -5,7 +5,7 @@ import * as SortingAlgorithms from '../SortingAlgorithms/SortingAlgorithms.js'
 const DEBUG = false;
 
 const ANIMATION_SPEED_MS = 100;
-const NUM_ARRAY_BARS = 100;
+const NUM_ARRAY_BARS = 15;
 
 // Colors used in the sorting visualizer.
 const PRIMARY_COLOR = '#484f8f';
@@ -65,7 +65,6 @@ export default class SortingVisualizer extends React.Component {
             const bStylePrev = arrayBars[bIndexPrev].style;
 
             if (swap === -1) { // Selecting two bars.
-                console.log("Selecting: [" + aIndex + ", " + bIndex + "]");
                 setTimeout(() => {
                     aStylePrev.backgroundColor = PRIMARY_COLOR;
                     bStylePrev.backgroundColor = PRIMARY_COLOR;
@@ -74,7 +73,6 @@ export default class SortingVisualizer extends React.Component {
                 }, i * ANIMATION_SPEED_MS);
 
             } else if (swap === 0) { // Comparing two bars.
-                console.log("Comparing: [" + aIndex + ", " + bIndex + "]");
                 setTimeout(() => {
                     aStylePrev.backgroundColor = PRIMARY_COLOR;
                     bStylePrev.backgroundColor = PRIMARY_COLOR;
@@ -82,7 +80,6 @@ export default class SortingVisualizer extends React.Component {
                     bStyle.backgroundColor = HIGHER_NUM_COLOR;
                 }, i * ANIMATION_SPEED_MS);
             } else { // Swapping positions of two bars.
-                console.log("Swapping: [" + aIndex + ", " + bIndex + "]");
                 setTimeout(() => {
                     aStyle.backgroundColor = HIGHER_NUM_COLOR;
                     bStyle.backgroundColor = LOWER_NUM_COLOR;
@@ -189,7 +186,6 @@ export default class SortingVisualizer extends React.Component {
             const arrayBars = document.getElementsByClassName('array-bar');
 
             const [swap, aIndex, bIndex] = animations[i];
-            console.log(animations[i]);
 
             const aStyle = arrayBars[aIndex].style;
             const bStyle = arrayBars[bIndex].style;
