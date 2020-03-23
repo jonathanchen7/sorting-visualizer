@@ -66,13 +66,42 @@ export default class SortingVisualizer extends React.Component {
 
             if (swap === -1) { // Selecting two bars.
                 console.log("Selecting: [" + aIndex + ", " + bIndex + "]");
+                setTimeout(() => {
+                    aStylePrev.backgroundColor = PRIMARY_COLOR;
+                    bStylePrev.backgroundColor = PRIMARY_COLOR;
+                    aStyle.backgroundColor = CURRENT_COMPARISON;
+                    bStyle.backgroundColor = CURRENT_COMPARISON;
+                }, i * ANIMATION_SPEED_MS);
 
             } else if (swap === 0) { // Comparing two bars.
                 console.log("Comparing: [" + aIndex + ", " + bIndex + "]");
+                setTimeout(() => {
+                    aStylePrev.backgroundColor = PRIMARY_COLOR;
+                    bStylePrev.backgroundColor = PRIMARY_COLOR;
+                    aStyle.backgroundColor = LOWER_NUM_COLOR;
+                    bStyle.backgroundColor = HIGHER_NUM_COLOR;
+                }, i * ANIMATION_SPEED_MS);
             } else { // Swapping positions of two bars.
                 console.log("Swapping: [" + aIndex + ", " + bIndex + "]");
+                setTimeout(() => {
+                    aStyle.backgroundColor = HIGHER_NUM_COLOR;
+                    bStyle.backgroundColor = LOWER_NUM_COLOR;
+
+                    let temp = aStyle.height;
+                    aStyle.height = bStyle.height;
+                    bStyle.height = temp;
+                }, i * ANIMATION_SPEED_MS);
             }
+            aIndexPrev = aIndex;
+            bIndexPrev = bIndex;
         }
+
+        const arrayBars = document.getElementsByClassName('array-bar');
+        setTimeout(() => {
+            for (let i = 0; i < arrayBars.length; i++) {
+                arrayBars[i].style.backgroundColor = PRIMARY_COLOR;
+            }
+        }, animations.length * ANIMATION_SPEED_MS);
     }
 
     // Handles animations for Insertion Sort.
@@ -129,7 +158,6 @@ export default class SortingVisualizer extends React.Component {
 
             aIndexPrev = aIndex;
             bIndexPrev = bIndex;
-
         }
 
         const arrayBars = document.getElementsByClassName('array-bar');
