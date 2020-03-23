@@ -4,8 +4,8 @@ import * as SortingAlgorithms from '../SortingAlgorithms/SortingAlgorithms.js'
 
 const DEBUG = false;
 
-const ANIMATION_SPEED_MS = 300;
-const NUM_ARRAY_BARS = 5;
+const ANIMATION_SPEED_MS = 100;
+const NUM_ARRAY_BARS = 100;
 
 // Colors used in the sorting visualizer.
 const PRIMARY_COLOR = '#484f8f';
@@ -49,8 +49,8 @@ export default class SortingVisualizer extends React.Component {
 
         console.log(animations);
 
-        // this.disableButtons(animations.length);
-        // this.updateArrayState(sortedArray, animations.length);
+        this.disableButtons(animations.length);
+        this.updateArrayState(sortedArray, animations.length);
 
         let [aIndexPrev, bIndexPrev] = [NUM_ARRAY_BARS - 1, NUM_ARRAY_BARS - 1];
 

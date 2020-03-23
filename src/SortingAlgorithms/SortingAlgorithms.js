@@ -3,11 +3,14 @@ export const bubbleSort = arr => {
     const animations = [];
     const arrCopy = arr.slice();
     let len = arrCopy.length;
+    let anySwaps = false;
 
     for (let i = 0; i < len - 1; i++) {
+        anySwaps = false;
         for (let j = 0; j < len - 1 - i; j++) {
             animations.push([-1, j, j + 1])
             if (arrCopy[j] > arrCopy[j + 1]) {
+                anySwaps = true;
                 animations.push([0, j + 1, j]);
                 animations.push([2, j + 1, j]);
                 let temp = arrCopy[j];
@@ -16,6 +19,10 @@ export const bubbleSort = arr => {
             } else {
                 animations.push([0, j, j + 1]);
             }
+        }
+
+        if (anySwaps === false) {
+            break;
         }
     }
     return [

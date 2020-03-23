@@ -45,11 +45,11 @@ button:disabled {
 }
 
 .array-bar {
-    /* width: 10px;
-    margin: 3px; */
-
+    width: 10px;
+    margin: 3px;
+/* 
     width: 5.3vw;
-    margin: .25vw;
+    margin: .25vw; */
     background-color: #484f8f;
     display: inline-block;
     border-bottom: 5px solid #488F4B;
