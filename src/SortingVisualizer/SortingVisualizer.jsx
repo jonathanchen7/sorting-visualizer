@@ -4,8 +4,8 @@ import * as SortingAlgorithms from '../SortingAlgorithms/SortingAlgorithms.js'
 
 const DEBUG = false;
 
-const ANIMATION_SPEED_MS = 200;
-const NUM_ARRAY_BARS = 15;
+const ANIMATION_SPEED_MS = 300;
+const NUM_ARRAY_BARS = 5;
 
 // Colors used in the sorting visualizer.
 const PRIMARY_COLOR = '#484f8f';
@@ -43,7 +43,36 @@ export default class SortingVisualizer extends React.Component {
 
     // Handles animations for Bubble Sort.
     bubbleSort() {
+        const results = SortingAlgorithms.bubbleSort(this.state.array);
+        const animations = results[0];
+        const sortedArray = results[1];
 
+        console.log(animations);
+
+        // this.disableButtons(animations.length);
+        // this.updateArrayState(sortedArray, animations.length);
+
+        let [aIndexPrev, bIndexPrev] = [NUM_ARRAY_BARS - 1, NUM_ARRAY_BARS - 1];
+
+        for (let i = 0; i < animations.length; i++) {
+            const arrayBars = document.getElementsByClassName('array-bar');
+
+            const [swap, aIndex, bIndex] = animations[i];
+            const aStyle = arrayBars[aIndex].style;
+            const bStyle = arrayBars[bIndex].style;
+
+            const aStylePrev = arrayBars[aIndexPrev].style;
+            const bStylePrev = arrayBars[bIndexPrev].style;
+
+            if (swap === -1) { // Selecting two bars.
+                console.log("Selecting: [" + aIndex + ", " + bIndex + "]");
+
+            } else if (swap === 0) { // Comparing two bars.
+                console.log("Comparing: [" + aIndex + ", " + bIndex + "]");
+            } else { // Swapping positions of two bars.
+                console.log("Swapping: [" + aIndex + ", " + bIndex + "]");
+            }
+        }
     }
 
     // Handles animations for Insertion Sort.
@@ -100,7 +129,7 @@ export default class SortingVisualizer extends React.Component {
 
             aIndexPrev = aIndex;
             bIndexPrev = bIndex;
-            
+
         }
 
         const arrayBars = document.getElementsByClassName('array-bar');

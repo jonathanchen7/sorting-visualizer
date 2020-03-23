@@ -6,10 +6,15 @@ export const bubbleSort = arr => {
 
     for (let i = 0; i < len - 1; i++) {
         for (let j = 0; j < len - 1 - i; j++) {
+            animations.push([-1, j, j + 1])
             if (arrCopy[j] > arrCopy[j + 1]) {
+                animations.push([0, j + 1, j]);
+                animations.push([2, j + 1, j]);
                 let temp = arrCopy[j];
                 arrCopy[j] = arrCopy[j + 1];
                 arrCopy[j + 1] = temp;
+            } else {
+                animations.push([0, j, j + 1]);
             }
         }
     }

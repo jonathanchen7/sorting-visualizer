@@ -28,7 +28,7 @@ button {
 
 button:hover:enabled {
     background-color: white;
-    border: 3px solid #488F4B;
+    border: 2px solid #488F4B;
     color: #488F4B;
     cursor: pointer;
 }
@@ -71,6 +71,6 @@ button:disabled {
 
 #sort-button:hover:enabled {
     background-color: white;
-    border: 3px solid #484f8f;
+    border: 2px solid #484f8f;
     color: #484f8f;
 }
