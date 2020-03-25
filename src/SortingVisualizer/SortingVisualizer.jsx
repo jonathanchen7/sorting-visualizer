@@ -4,7 +4,7 @@ import * as SortingAlgorithms from '../SortingAlgorithms/SortingAlgorithms.js'
 
 const DEBUG = false;
 
-const ANIMATION_SPEED_MS = 100;
+const ANIMATION_SPEED_MS = 20;
 const NUM_ARRAY_BARS = 15;
 
 // Colors used in the sorting visualizer.
@@ -43,7 +43,7 @@ export default class SortingVisualizer extends React.Component {
 
     // Handles animations for Bubble Sort.
     bubbleSort() {
-        const results = SortingAlgorithms.bubbleSort(this.state.array);
+        const results = SortingAlgorithms.bubbleSort(this.state.array.slice());
         const animations = results[0];
         const sortedArray = results[1];
 
@@ -103,7 +103,7 @@ export default class SortingVisualizer extends React.Component {
 
     // Handles animations for Insertion Sort.
     insertionSort() {
-        const results = SortingAlgorithms.insertionSort(this.state.array);
+        const results = SortingAlgorithms.insertionSort(this.state.array.slice());
         const animations = results[0];
         const sortedArray = results[1];
 
@@ -168,7 +168,7 @@ export default class SortingVisualizer extends React.Component {
 
     // Handles animations for Selection Sort.
     selectionSort() {
-        const results = SortingAlgorithms.selectionSort(this.state.array);
+        const results = SortingAlgorithms.selectionSort(this.state.array.slice());
 
         const animations = results[0];
         const sortedArray = results[1];
@@ -223,14 +223,21 @@ export default class SortingVisualizer extends React.Component {
 
     }
 
-    // Handles animations for Heap Sort.
-    heapSort() {
+    // Handles animations for Merge Sort.
+    mergeSort() {
 
     }
 
     // Handles animations for Quick Sort.
     quickSort() {
+        const results = SortingAlgorithms.quickSort(this.state.array.slice(), 0 , NUM_ARRAY_BARS - 1);
+        const animations = results[0];
+        const sortedArray = results[1];
 
+        console.log(sortedArray);
+
+        // this.disableButtons(animations.length);
+        this.updateArrayState(sortedArray, animations.length);
     }
 
     // Temporarily disables buttons until sorting is complete.
@@ -329,7 +336,7 @@ export default class SortingVisualizer extends React.Component {
                     <button className="bottom-button" onClick={() => this.bubbleSort()}>bubble</button>
                     <button className="bottom-button" onClick={() => this.insertionSort()}>insertion</button>
                     <button className="bottom-button" onClick={() => this.selectionSort()}>selection</button>
-                    <button className="bottom-button" onClick={() => this.heapSort()}>heap</button>
+                    <button className="bottom-button" onClick={() => this.mergeSort()}>merge</button>
                     <button className="bottom-button" onClick={() => this.quickSort()}>quick</button>
                     <button className="bottom-button" id="sort-button" onClick={() => alert("Not implemented yet!")}>sort!</button>
                 </div>
