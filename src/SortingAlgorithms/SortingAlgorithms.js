@@ -109,11 +109,11 @@ function mergeSortHelp(animations, arr, aux, lo, hi) {
 }
 
 function mergeSortCombine(animations, arr, aux, lo, mid, hi) {
-    // console.log("Aux Pre-Combine: " + aux);
     let index = lo;
     let i = lo;
     let j = mid + 1;
     
+    // Sorts the two halves in the auxillary array. 
     while (i <= mid && j <= hi) {
         if (arr[i] <= arr[j]) {
             aux[index++] = arr[i++];
@@ -122,18 +122,17 @@ function mergeSortCombine(animations, arr, aux, lo, mid, hi) {
         }
     }
 
-    while (i <= mid) {
+    /* Copies the largest elements in the first half to the aux array (if applicable).
+    Does not need to be done with the second half because they would already be in the
+    proper locations. */    
+    while (i <= mid) { 
         aux[index++] = arr[i++];
     }
-    
-    // while (j <= hi) {
-    //     aux[index++] = arr[j++];
-    // }
 
+    // Copies relevant sections of the aux array to the main arr. 
     for (let i = lo; i <= hi; i++) {
         arr[i] = aux[i];
     }
-    // console.log("Aux Post-Combine: " + aux);
 }
 
 // Quick Sort implementation that returns both an array of animations + the sorted array.

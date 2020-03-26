@@ -5,7 +5,7 @@ import * as SortingAlgorithms from '../SortingAlgorithms/SortingAlgorithms.js'
 const DEBUG = false;
 
 const ANIMATION_SPEED_MS = 50;
-const NUM_ARRAY_BARS = 100;
+const NUM_ARRAY_BARS = 15;
 
 // Colors used in the sorting visualizer.
 const PRIMARY_COLOR = '#484f8f';
