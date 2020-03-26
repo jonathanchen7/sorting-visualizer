@@ -4,16 +4,15 @@ import * as SortingAlgorithms from '../SortingAlgorithms/SortingAlgorithms.js'
 
 const DEBUG = false;
 
-const ANIMATION_SPEED_MS = 20;
-const NUM_ARRAY_BARS = 100;
+const ANIMATION_SPEED_MS = 50;
+const NUM_ARRAY_BARS = 15;
 const SORTED_MS = 1500;
 
 // Colors used in the sorting visualizer.
 const PRIMARY_COLOR = '#484f8f';
-const CURRENT_COMPARISON = 'yellow';
+const SELECTION_COLOR = 'yellow';
 const HIGHER_NUM_COLOR = 'red';
 const LOWER_NUM_COLOR = 'green';
-const SINGLE_SELECTION = 'yellow';
 const SORTED_COLOR = 'green';
 
 // const PRIMARY_COLOR = '#989dca';
@@ -62,7 +61,7 @@ export default class SortingVisualizer extends React.Component {
             const bStylePrev = arrayBars[bIndexPrev].style;
 
             if (swap === -1) { // Selecting two bars.
-                this.updateColors(aStyle, bStyle, CURRENT_COMPARISON, CURRENT_COMPARISON, aStylePrev, bStylePrev, i);
+                this.updateColors(aStyle, bStyle, SELECTION_COLOR, SELECTION_COLOR, aStylePrev, bStylePrev, i);
             } else if (swap === 0) { // Comparing two bars.
                 this.updateColors(aStyle, bStyle, LOWER_NUM_COLOR, HIGHER_NUM_COLOR, aStylePrev, bStylePrev, i);
             } else { // Swapping positions of two bars.
@@ -97,9 +96,9 @@ export default class SortingVisualizer extends React.Component {
             const bStylePrev = arrayBars[bIndexPrev].style;
 
             if (swap === -1) {
-                this.updateColors(aStyle, bStyle, SINGLE_SELECTION, SINGLE_SELECTION, aStylePrev, bStylePrev, i);
+                this.updateColors(aStyle, bStyle, SELECTION_COLOR, SELECTION_COLOR, aStylePrev, bStylePrev, i);
             } else if (swap === 0) {
-                this.updateColors(aStyle, bStyle, CURRENT_COMPARISON, CURRENT_COMPARISON, aStylePrev, bStylePrev, i);
+                this.updateColors(aStyle, bStyle, SELECTION_COLOR, SELECTION_COLOR, aStylePrev, bStylePrev, i);
             } else if (swap === 1) {
                 this.updateColors(aStyle, bStyle, LOWER_NUM_COLOR, HIGHER_NUM_COLOR, aStylePrev, bStylePrev, i);
             } else {
@@ -175,7 +174,7 @@ export default class SortingVisualizer extends React.Component {
             const bStylePrev = arrayBars[bIndexPrev].style;
 
             if (state === -1) { // Highlighting hi and lo.
-                this.updateColors(aStyle, bStyle, CURRENT_COMPARISON, CURRENT_COMPARISON, aStylePrev, bStylePrev, i);
+                this.updateColors(aStyle, bStyle, SELECTION_COLOR, SELECTION_COLOR, aStylePrev, bStylePrev, i);
             } else if (state === 0) {
                 this.updateColors(aStyle, bStyle, LOWER_NUM_COLOR, HIGHER_NUM_COLOR, aStylePrev, bStylePrev, i);
             } else {
@@ -215,11 +214,11 @@ export default class SortingVisualizer extends React.Component {
 
             if (state === -2) { // Highlighting hi and lo of current partition. 
                 if (DEBUG) console.log("lo: " + aIndex + " hi: " + bIndex);
-                this.updateColors(aStyle, bStyle, CURRENT_COMPARISON, CURRENT_COMPARISON, aStylePrev, bStylePrev, i);
+                this.updateColors(aStyle, bStyle, SELECTION_COLOR, SELECTION_COLOR, aStylePrev, bStylePrev, i);
 
             } else if (state === -1) { // Highlighting pivot index.
                 if (DEBUG) console.log("pivot: " + aIndex);
-                this.updateColors(aStyle, bStyle, SINGLE_SELECTION, SINGLE_SELECTION, aStylePrev, bStylePrev, i);
+                this.updateColors(aStyle, bStyle, SELECTION_COLOR, SELECTION_COLOR, aStylePrev, bStylePrev, i);
 
             } else if (state === 0) { // Comparing current bar with pivot.
                 if (DEBUG) console.log("comparison: [" + aIndex + ", " + bIndex + "]");
@@ -379,7 +378,7 @@ export default class SortingVisualizer extends React.Component {
                 </header>
                 <div>
                     <button className="center-button" onClick={() => this.resetArray()}>generate new array</button>
-                    <button className="center-button" onClick={() => this.testAlgorithms()}>test algorithms</button>
+                    {/* <button className="center-button" onClick={() => this.testAlgorithms()}>test algorithms</button> */}
                 </div>
                 <div className="array-container">
                     {array.map((value, idx) => (
