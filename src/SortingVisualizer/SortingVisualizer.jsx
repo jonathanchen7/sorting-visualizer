@@ -4,8 +4,8 @@ import * as SortingAlgorithms from '../SortingAlgorithms/SortingAlgorithms.js'
 
 const DEBUG = false;
 
-const ANIMATION_SPEED_MS = 20;
-const NUM_ARRAY_BARS = 100;
+const ANIMATION_SPEED_MS = 200;
+const NUM_ARRAY_BARS = 15;
 
 // Colors used in the sorting visualizer.
 const PRIMARY_COLOR = '#484f8f';
@@ -231,17 +231,17 @@ export default class SortingVisualizer extends React.Component {
 
     // Handles animations for Quick Sort.
     quickSort() {
+        const arrayBars = document.getElementsByClassName('array-bar');
         const results = SortingAlgorithms.quickSort(this.state.array.slice(), 0, NUM_ARRAY_BARS - 1);
         const animations = results[0];
         const sortedArray = results[1];
-        
+
         this.disableButtons(animations.length);
         this.updateArrayState(sortedArray, animations.length);
 
         let [aIndexPrev, bIndexPrev] = [NUM_ARRAY_BARS - 1, NUM_ARRAY_BARS - 1];
 
         for (let i = 0; i < animations.length; i++) {
-            const arrayBars = document.getElementsByClassName('array-bar');
 
             const [state, aIndex, bIndex] = animations[i];
 
@@ -251,73 +251,65 @@ export default class SortingVisualizer extends React.Component {
             const aStylePrev = arrayBars[aIndexPrev].style;
             const bStylePrev = arrayBars[bIndexPrev].style;
 
-            if (state === -2) {
+            if (state === -2) { // Highlighting hi and lo of current partition. 
                 if (DEBUG) console.log("lo: " + aIndex + " hi: " + bIndex);
 
                 setTimeout(() => {
-                    aStylePrev.backgroundColor = PRIMARY_COLOR;
-                    bStylePrev.backgroundColor = PRIMARY_COLOR;
-
-                    aStyle.backgroundColor = CURRENT_COMPARISON;
-                    bStyle.backgroundColor = CURRENT_COMPARISON;
+                    this.updateColors(aStyle, bStyle, CURRENT_COMPARISON, CURRENT_COMPARISON, aStylePrev, bStylePrev);
                 }, i * ANIMATION_SPEED_MS);
 
-            } else if (state === -1) {
+            } else if (state === -1) { // Highlighting pivot index.
                 if (DEBUG) console.log("pivot: " + aIndex);
 
                 setTimeout(() => {
-                    aStylePrev.backgroundColor = PRIMARY_COLOR;
-                    bStylePrev.backgroundColor = PRIMARY_COLOR;
-                    aStyle.backgroundColor = SINGLE_SELECTION;
+                    this.updateColors(aStyle, bStyle, SINGLE_SELECTION, SINGLE_SELECTION, aStylePrev, bStylePrev);
                 }, i * ANIMATION_SPEED_MS);
 
-            } else if (state === 0) {
+            } else if (state === 0) { // Comparing current bar with pivot.
                 if (DEBUG) console.log("comparison: [" + aIndex + ", " + bIndex + "]");
 
                 setTimeout(() => {
-                    aStylePrev.backgroundColor = PRIMARY_COLOR;
-                    bStylePrev.backgroundColor = PRIMARY_COLOR;
-
-                    aStyle.backgroundColor = LOWER_NUM_COLOR;
-                    bStyle.backgroundColor = HIGHER_NUM_COLOR;
+                    this.updateColors(aStyle, bStyle, LOWER_NUM_COLOR, HIGHER_NUM_COLOR, aStylePrev, bStylePrev);
                 }, i * ANIMATION_SPEED_MS);
 
-            } else if (state === 1) {
+            } else if (state === 1) { // Swapping pivot bar with swap index. 
                 if (DEBUG) console.log("swapping: [" + aIndex + ", " + bIndex + "]");
 
                 setTimeout(() => {
-                    bStyle.backgroundColor = HIGHER_NUM_COLOR;
-                    aStyle.backgroundColor = LOWER_NUM_COLOR;
-
-                    let temp = aStyle.height;
-                    aStyle.height = bStyle.height;
-                    bStyle.height = temp;
+                    this.updateColors(aStyle, bStyle, LOWER_NUM_COLOR, HIGHER_NUM_COLOR, aStylePrev, bStylePrev);
+                    this.swapBars(aStyle, bStyle);
                 }, i * ANIMATION_SPEED_MS);
 
             } else {
                 if (DEBUG) console.log("swap pivot: [" + aIndex + ", " + bIndex + "]");
 
                 setTimeout(() => {
-                    aStylePrev.backgroundColor = PRIMARY_COLOR;
-                    bStylePrev.backgroundColor = PRIMARY_COLOR;
-                    aStyle.backgroundColor = PRIMARY_COLOR;
-                    bStyle.backgroundColor = PRIMARY_COLOR;
-
-                    let temp = aStyle.height;
-                    aStyle.height = bStyle.height;
-                    bStyle.height = temp;
+                    this.updateColors(aStyle, bStyle, PRIMARY_COLOR, PRIMARY_COLOR, aStylePrev, bStylePrev);
+                    this.swapBars(aStyle, bStyle);
                 }, i * ANIMATION_SPEED_MS);
             }
             aIndexPrev = aIndex;
             bIndexPrev = bIndex;
         }
 
-        const arrayBars = document.getElementsByClassName('array-bar');
         setTimeout(() => {
             for (let i = 0; i < arrayBars.length; i++) {
                 arrayBars[i].style.backgroundColor = PRIMARY_COLOR;
             }
         }, animations.length * ANIMATION_SPEED_MS);
+    }
+
+    updateColors(aStyle, bStyle, aColor, bColor, aStylePrev, bStylePrev) {
+        aStylePrev.backgroundColor = PRIMARY_COLOR;
+        bStylePrev.backgroundColor = PRIMARY_COLOR;
+        aStyle.backgroundColor = aColor;
+        bStyle.backgroundColor = bColor;
+    }
+
+    swapBars(aStyle, bStyle) {
+        let temp = aStyle.height;
+        aStyle.height = bStyle.height;
+        bStyle.height = temp;
     }
 
     // Temporarily disables buttons until sorting is complete.

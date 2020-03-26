@@ -98,6 +98,7 @@ export const quickSort = (arr, lo, hi) => {
     ];
 };
 
+// Recrusive helper method for Quick Sort.
 function quickSortHelp(animations, arr, lo, hi) {
     if (lo < hi) {
         var partitionIndex = quickSortPartition(animations, arr, lo, hi);
