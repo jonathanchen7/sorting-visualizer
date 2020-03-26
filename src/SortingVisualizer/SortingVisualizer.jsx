@@ -5,7 +5,7 @@ import * as SortingAlgorithms from '../SortingAlgorithms/SortingAlgorithms.js'
 const DEBUG = false;
 
 const ANIMATION_SPEED_MS = 50;
-const NUM_ARRAY_BARS = 15;
+const NUM_ARRAY_BARS = 100;
 
 // Colors used in the sorting visualizer.
 const PRIMARY_COLOR = '#484f8f';
@@ -154,7 +154,11 @@ export default class SortingVisualizer extends React.Component {
 
     // Handles animations for Merge Sort.
     mergeSort() {
+        const results = SortingAlgorithms.mergeSort(this.state.array.slice());
+        const animations = results[0];
+        const sortedArray = results[1];
 
+        this.updateArrayState(sortedArray, animations.length);
     }
 
     // Handles animations for Quick Sort.
@@ -282,7 +286,8 @@ export default class SortingVisualizer extends React.Component {
             const bubbleSortArray = SortingAlgorithms.bubbleSort(testArrays[i].slice())[1];
             const insertionSortArray = SortingAlgorithms.insertionSort(testArrays[i].slice())[1];
             const selectionSortArray = SortingAlgorithms.selectionSort(testArrays[i].slice())[1];
-            const quickSortArray = SortingAlgorithms.quickSort(testArrays[i].slice(), 0, testArrays[i].slice().length - 1)[1];
+            const mergeSortArray = SortingAlgorithms.mergeSort(testArrays[i].slice())[1];
+            const quickSortArray = SortingAlgorithms.quickSort(testArrays[i].slice())[1];
 
             if (this.arraysAreEqual(javaScriptSort, bubbleSortArray)) {
                 testResults[0]++;
@@ -296,15 +301,20 @@ export default class SortingVisualizer extends React.Component {
                 testResults[2]++;
             }
 
-            if (this.arraysAreEqual(javaScriptSort, quickSortArray)) {
+            if (this.arraysAreEqual(javaScriptSort, mergeSortArray)) {
                 testResults[3]++;
+            }
+
+            if (this.arraysAreEqual(javaScriptSort, quickSortArray)) {
+                testResults[4]++;
             }
         }
 
         console.log("Bubble Sort: " + testResults[0] + " correct");
         console.log("Insertion Sort: " + testResults[1] + " correct");
         console.log("Selection Sort: " + testResults[2] + " correct");
-        console.log("Quick Sort: " + testResults[3] + " correct");
+        console.log("Merge Sort: " + testResults[3] + " correct");
+        console.log("Quick Sort: " + testResults[4] + " correct");
     }
 
     // Determines whether two arrays are equal, taking order into account.
@@ -329,7 +339,7 @@ export default class SortingVisualizer extends React.Component {
                 </header>
                 <div>
                     <button className="center-button" onClick={() => this.resetArray()}>generate new array</button>
-                    {/* <button className="center-button" onClick={() => this.testAlgorithms()}>test algorithms</button> */}
+                    <button className="center-button" onClick={() => this.testAlgorithms()}>test algorithms</button>
                 </div>
                 <div className="array-container">
                     {array.map((value, idx) => (

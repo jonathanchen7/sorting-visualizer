@@ -90,8 +90,7 @@ export const selectionSort = arr => {
 
 export const mergeSort = (arr) => {
     const animations = [];
-    let aux = arr.slice();
-    mergeSortHelp(animations, arr, aux, 0, arr.length - 1);
+    mergeSortHelp(animations, arr, arr.slice(), 0, arr.length - 1);
 
     return [
         animations,
@@ -101,20 +100,22 @@ export const mergeSort = (arr) => {
 
 function mergeSortHelp(animations, arr, aux, lo, hi) {
     if (lo < hi) {
-        let mid = (lo + hi) / 2;
-        mergeSortHelp(animations, arr, lo, mid);
-        mergeSortHelp(animations, arr, mid + 1, hi);
+        let mid = Math.floor((lo + hi) / 2);
+        mergeSortHelp(animations, arr, aux, lo, mid);
+        mergeSortHelp(animations, arr, aux, mid + 1, hi);
 
         mergeSortCombine(animations, arr, aux, lo, mid, hi);
     }
 }
 
 function mergeSortCombine(animations, arr, aux, lo, mid, hi) {
+    // console.log("Aux Pre-Combine: " + aux);
+    let index = lo;
     let i = lo;
     let j = mid + 1;
-    let index = lo;
+    
     while (i <= mid && j <= hi) {
-        if (arr[i] < arr[j]) {
+        if (arr[i] <= arr[j]) {
             aux[index++] = arr[i++];
         } else {
             aux[index++] = arr[j++];
@@ -124,14 +125,15 @@ function mergeSortCombine(animations, arr, aux, lo, mid, hi) {
     while (i <= mid) {
         aux[index++] = arr[i++];
     }
-    while (j <= hi) {
-        aux[index++] = arr[j++];
-    }
+    
+    // while (j <= hi) {
+    //     aux[index++] = arr[j++];
+    // }
 
     for (let i = lo; i <= hi; i++) {
         arr[i] = aux[i];
     }
-
+    // console.log("Aux Post-Combine: " + aux);
 }
 
 // Quick Sort implementation that returns both an array of animations + the sorted array.
