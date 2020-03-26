@@ -280,19 +280,19 @@ export default class SortingVisualizer extends React.Component {
 
     // Temporarily disables buttons until sorting is complete.
     disableButtons(numAnimations) {
-        const buttons = document.getElementsByTagName('button');
+        // const buttons = document.getElementsByTagName('button');
 
-        for (let i = 0; i < buttons.length; i++) {
-            const button = buttons[i];
-            button.disabled = true;
-        }
+        // for (let i = 0; i < buttons.length; i++) {
+        //     const button = buttons[i];
+        //     button.disabled = true;
+        // }
 
-        setTimeout(() => {
-            for (let i = 0; i < buttons.length; i++) {
-                const button = buttons[i];
-                button.disabled = false;
-            }
-        }, (numAnimations * ANIMATION_SPEED_MS) + SORTED_MS);
+        // setTimeout(() => {
+        //     for (let i = 0; i < buttons.length; i++) {
+        //         const button = buttons[i];
+        //         button.disabled = false;
+        //     }
+        // }, (numAnimations * ANIMATION_SPEED_MS) + SORTED_MS);
     }
 
     // Updates the state once all animations have finished.
