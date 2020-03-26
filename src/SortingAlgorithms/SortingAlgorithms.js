@@ -90,8 +90,7 @@ export const selectionSort = arr => {
 
 export const quickSort = (arr, lo, hi) => {
     const animations = [];
-
-    quickSortHelp(arr, lo, hi);
+    quickSortHelp(animations, arr, lo, hi);
 
     return [
         animations,
@@ -99,28 +98,35 @@ export const quickSort = (arr, lo, hi) => {
     ];
 };
 
-function quickSortHelp(arr, lo, hi) {
+function quickSortHelp(animations, arr, lo, hi) {
     if (lo < hi) {
-        var partitionIndex = quickSortPartition(arr, lo, hi);
+        var partitionIndex = quickSortPartition(animations, arr, lo, hi);
 
-        quickSortHelp(arr, lo, partitionIndex - 1);
-        quickSortHelp(arr, partitionIndex + 1, hi);
+        quickSortHelp(animations, arr, lo, partitionIndex - 1);
+        quickSortHelp(animations, arr, partitionIndex + 1, hi);
     }
 }
 
-function quickSortPartition(arr, lo, hi) {
+function quickSortPartition(animations, arr, lo, hi) {
+    animations.push([-2, lo, hi]);
+    animations.push([-1, hi, hi]);
     const pivot = arr[hi];
     let swapIndex = lo;
 
     for (let i = lo; i < hi; i++) {
         // If the current element is smaller than the pivot, swap with the element at swapIndex.
         if (arr[i] < pivot) {
+            animations.push([0, i, hi]);
+            animations.push([1, i, swapIndex]);
             let temp = arr[i];
             arr[i] = arr[swapIndex];
             arr[swapIndex] = temp;
             swapIndex++;
+        } else {
+            animations.push([0, hi, i]);
         }
     }
+    animations.push([2, hi, swapIndex]);
     let temp = arr[hi];
     arr[hi] = arr[swapIndex];
     arr[swapIndex] = temp;

@@ -4,15 +4,16 @@ import * as SortingAlgorithms from '../SortingAlgorithms/SortingAlgorithms.js'
 
 const DEBUG = false;
 
-const ANIMATION_SPEED_MS = 20;
+const ANIMATION_SPEED_MS = 200;
 const NUM_ARRAY_BARS = 15;
 
 // Colors used in the sorting visualizer.
 const PRIMARY_COLOR = '#484f8f';
-const CURRENT_COMPARISON = '#484f8f';
+const CURRENT_COMPARISON = 'pink';
 const HIGHER_NUM_COLOR = 'red';
 const LOWER_NUM_COLOR = 'green';
 const SORTED_COLOR = '#90ee90';
+const SINGLE_SELECTION = 'yellow';
 
 // const PRIMARY_COLOR = '#989dca';
 
@@ -180,7 +181,7 @@ export default class SortingVisualizer extends React.Component {
         if (DEBUG) console.log(animations);
 
         // Variables used to track the swapped array indices.
-        let [aIndexPrev, bIndexPrev] = [length - 1, length - 1];
+        let [aIndexPrev, bIndexPrev] = [NUM_ARRAY_BARS - 1, NUM_ARRAY_BARS - 1];
 
         for (let i = 0; i < animations.length; i++) {
             const arrayBars = document.getElementsByClassName('array-bar');
@@ -230,12 +231,64 @@ export default class SortingVisualizer extends React.Component {
 
     // Handles animations for Quick Sort.
     quickSort() {
-        const results = SortingAlgorithms.quickSort(this.state.array.slice(), 0 , NUM_ARRAY_BARS - 1);
+        const results = SortingAlgorithms.quickSort(this.state.array.slice(), 0, NUM_ARRAY_BARS - 1);
         const animations = results[0];
         const sortedArray = results[1];
 
+        console.log(animations);
+
+        let [aIndexPrev, bIndexPrev] = [NUM_ARRAY_BARS - 1, NUM_ARRAY_BARS - 1];
+
+        for (let i = 0; i < animations.length; i++) {
+            const arrayBars = document.getElementsByClassName('array-bar');
+
+            const [state, aIndex, bIndex] = animations[i];
+
+            const aStyle = arrayBars[aIndex].style;
+            const bStyle = arrayBars[bIndex].style;
+
+            const aStylePrev = arrayBars[aIndexPrev].style;
+            const bStylePrev = arrayBars[bIndexPrev].style;
+
+            if (state === -2) {
+                if (DEBUG) console.log("lo: " + aIndex + " hi: " + bIndex);
+
+                setTimeout(() => {
+                    aStylePrev.backgroundColor = PRIMARY_COLOR;
+                    bStylePrev.backgroundColor = PRIMARY_COLOR;
+
+                    aStyle.backgroundColor = CURRENT_COMPARISON;
+                    bStyle.backgroundColor = CURRENT_COMPARISON;
+                }, i * ANIMATION_SPEED_MS);
+
+            } else if (state === -1) {
+                if (DEBUG) console.log("pivot: " + aIndex);
+
+                setTimeout(() => {
+                    aStylePrev.backgroundColor = PRIMARY_COLOR;
+                    bStylePrev.backgroundColor = PRIMARY_COLOR;
+                    aStyle.backgroundColor = SINGLE_SELECTION;
+                }, i * ANIMATION_SPEED_MS);
+
+            } else if (state === 0) {
+                if (DEBUG) console.log("comparison: [" + aIndex + ", " + bIndex + "]");
+
+                setTimeout(() => {
+                    aStylePrev.backgroundColor = PRIMARY_COLOR;
+                    bStylePrev.backgroundColor = PRIMARY_COLOR;
+
+                    aStyle.backgroundColor = CURRENT_COMPARISON;
+                    bStyle.backgroundColor = CURRENT_COMPARISON;
+                }, i * ANIMATION_SPEED_MS);
+            } else if (state === 1) {
+                if (DEBUG) console.log("swapping: [" + aIndex + ", " + bIndex + "]");
+            } else {
+                if (DEBUG) console.log("swap pivot: [" + aIndex + ", " + bIndex + "]")
+            }
+        }
+
         // this.disableButtons(animations.length);
-        this.updateArrayState(sortedArray, animations.length);
+        // this.updateArrayState(sortedArray, animations.length);
     }
 
     // Temporarily disables buttons until sorting is complete.
@@ -303,7 +356,7 @@ export default class SortingVisualizer extends React.Component {
                 testResults[3]++;
             }
         }
-        
+
         console.log("Bubble Sort: " + testResults[0] + " correct");
         console.log("Insertion Sort: " + testResults[1] + " correct");
         console.log("Selection Sort: " + testResults[2] + " correct");
@@ -332,7 +385,7 @@ export default class SortingVisualizer extends React.Component {
                 </header>
                 <div>
                     <button className="center-button" onClick={() => this.resetArray()}>generate new array</button>
-                    <button className="center-button" onClick={() => this.testAlgorithms()}>test algorithms</button>
+                    {/* <button className="center-button" onClick={() => this.testAlgorithms()}>test algorithms</button> */}
                 </div>
                 <div className="array-container">
                     {array.map((value, idx) => (
