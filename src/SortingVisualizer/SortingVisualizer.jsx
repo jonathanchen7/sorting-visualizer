@@ -4,8 +4,8 @@ import * as SortingAlgorithms from '../SortingAlgorithms/SortingAlgorithms.js'
 
 const DEBUG = false;
 
-const ANIMATION_SPEED_MS = 200;
-const NUM_ARRAY_BARS = 15;
+const ANIMATION_SPEED_MS = 20;
+const NUM_ARRAY_BARS = 100;
 
 // Colors used in the sorting visualizer.
 const PRIMARY_COLOR = '#484f8f';
@@ -234,8 +234,9 @@ export default class SortingVisualizer extends React.Component {
         const results = SortingAlgorithms.quickSort(this.state.array.slice(), 0, NUM_ARRAY_BARS - 1);
         const animations = results[0];
         const sortedArray = results[1];
-
-        console.log(animations);
+        
+        this.disableButtons(animations.length);
+        this.updateArrayState(sortedArray, animations.length);
 
         let [aIndexPrev, bIndexPrev] = [NUM_ARRAY_BARS - 1, NUM_ARRAY_BARS - 1];
 
@@ -277,18 +278,46 @@ export default class SortingVisualizer extends React.Component {
                     aStylePrev.backgroundColor = PRIMARY_COLOR;
                     bStylePrev.backgroundColor = PRIMARY_COLOR;
 
-                    aStyle.backgroundColor = CURRENT_COMPARISON;
-                    bStyle.backgroundColor = CURRENT_COMPARISON;
+                    aStyle.backgroundColor = LOWER_NUM_COLOR;
+                    bStyle.backgroundColor = HIGHER_NUM_COLOR;
                 }, i * ANIMATION_SPEED_MS);
+
             } else if (state === 1) {
                 if (DEBUG) console.log("swapping: [" + aIndex + ", " + bIndex + "]");
+
+                setTimeout(() => {
+                    bStyle.backgroundColor = HIGHER_NUM_COLOR;
+                    aStyle.backgroundColor = LOWER_NUM_COLOR;
+
+                    let temp = aStyle.height;
+                    aStyle.height = bStyle.height;
+                    bStyle.height = temp;
+                }, i * ANIMATION_SPEED_MS);
+
             } else {
-                if (DEBUG) console.log("swap pivot: [" + aIndex + ", " + bIndex + "]")
+                if (DEBUG) console.log("swap pivot: [" + aIndex + ", " + bIndex + "]");
+
+                setTimeout(() => {
+                    aStylePrev.backgroundColor = PRIMARY_COLOR;
+                    bStylePrev.backgroundColor = PRIMARY_COLOR;
+                    aStyle.backgroundColor = PRIMARY_COLOR;
+                    bStyle.backgroundColor = PRIMARY_COLOR;
+
+                    let temp = aStyle.height;
+                    aStyle.height = bStyle.height;
+                    bStyle.height = temp;
+                }, i * ANIMATION_SPEED_MS);
             }
+            aIndexPrev = aIndex;
+            bIndexPrev = bIndex;
         }
 
-        // this.disableButtons(animations.length);
-        // this.updateArrayState(sortedArray, animations.length);
+        const arrayBars = document.getElementsByClassName('array-bar');
+        setTimeout(() => {
+            for (let i = 0; i < arrayBars.length; i++) {
+                arrayBars[i].style.backgroundColor = PRIMARY_COLOR;
+            }
+        }, animations.length * ANIMATION_SPEED_MS);
     }
 
     // Temporarily disables buttons until sorting is complete.
