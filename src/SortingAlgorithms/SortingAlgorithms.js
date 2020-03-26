@@ -90,20 +90,23 @@ export const selectionSort = arr => {
 
 export const quickSort = (arr, lo, hi) => {
     const animations = [];
-    let len = arr.length;
 
-    if (lo < hi) {
-        var partitionIndex = quickSortPartition(arr, lo, hi);
-
-        quickSort(arr, lo, partitionIndex - 1);
-        quickSort(arr, partitionIndex + 1, hi);
-    }
+    quickSortHelp(arr, lo, hi);
 
     return [
         animations,
         arr
     ];
 };
+
+function quickSortHelp(arr, lo, hi) {
+    if (lo < hi) {
+        var partitionIndex = quickSortPartition(arr, lo, hi);
+
+        quickSortHelp(arr, lo, partitionIndex - 1);
+        quickSortHelp(arr, partitionIndex + 1, hi);
+    }
+}
 
 function quickSortPartition(arr, lo, hi) {
     const pivot = arr[hi];
