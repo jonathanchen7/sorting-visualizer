@@ -4,7 +4,7 @@ import * as SortingAlgorithms from '../SortingAlgorithms/SortingAlgorithms.js'
 
 const DEBUG = false;
 
-const ANIMATION_SPEED_MS = 200;
+const ANIMATION_SPEED_MS = 50;
 const NUM_ARRAY_BARS = 15;
 
 // Colors used in the sorting visualizer.
@@ -175,6 +175,8 @@ export default class SortingVisualizer extends React.Component {
         const sortedArray = results[1];
         const length = sortedArray.length; // maybe replace with NUM_ARRAY_BARS?
 
+        const arrayBars = document.getElementsByClassName('array-bar');
+
         this.disableButtons(animations.length);
         this.updateArrayState(sortedArray, animations.length);
 
@@ -184,8 +186,6 @@ export default class SortingVisualizer extends React.Component {
         let [aIndexPrev, bIndexPrev] = [NUM_ARRAY_BARS - 1, NUM_ARRAY_BARS - 1];
 
         for (let i = 0; i < animations.length; i++) {
-            const arrayBars = document.getElementsByClassName('array-bar');
-
             const [swap, aIndex, bIndex] = animations[i];
 
             const aStyle = arrayBars[aIndex].style;
@@ -198,11 +198,8 @@ export default class SortingVisualizer extends React.Component {
                 if (DEBUG) console.log("Swap: " + animations[i]);
 
                 setTimeout(() => {
-                    aStylePrev.backgroundColor = PRIMARY_COLOR;
-                    bStylePrev.backgroundColor = PRIMARY_COLOR;
-                    let temp = aStyle.height;
-                    aStyle.height = bStyle.height;
-                    bStyle.height = temp;
+                    this.updateColors(aStyle, bStyle, LOWER_NUM_COLOR, HIGHER_NUM_COLOR, aStylePrev, bStylePrev);
+                    this.swapBars(aStyle, bStyle);
                 }, i * ANIMATION_SPEED_MS);
 
             } else {
@@ -221,7 +218,7 @@ export default class SortingVisualizer extends React.Component {
             bIndexPrev = bIndex;
         }
 
-
+        this.resetColors(arrayBars, animations.length);
     }
 
     // Handles animations for Merge Sort.
@@ -292,13 +289,10 @@ export default class SortingVisualizer extends React.Component {
             bIndexPrev = bIndex;
         }
 
-        setTimeout(() => {
-            for (let i = 0; i < arrayBars.length; i++) {
-                arrayBars[i].style.backgroundColor = PRIMARY_COLOR;
-            }
-        }, animations.length * ANIMATION_SPEED_MS);
+        this.resetColors(arrayBars, animations.length);
     }
 
+    // Resets the bars used in the previous animation to the primary color and updates the colors of bars A and B. 
     updateColors(aStyle, bStyle, aColor, bColor, aStylePrev, bStylePrev) {
         aStylePrev.backgroundColor = PRIMARY_COLOR;
         bStylePrev.backgroundColor = PRIMARY_COLOR;
@@ -306,10 +300,20 @@ export default class SortingVisualizer extends React.Component {
         bStyle.backgroundColor = bColor;
     }
 
+    // Swaps the heights of bars A and B.
     swapBars(aStyle, bStyle) {
         let temp = aStyle.height;
         aStyle.height = bStyle.height;
         bStyle.height = temp;
+    }
+
+    // Resets the colors of all array bars to the primary color.
+    resetColors(arrayBars, animationsLength) {
+        setTimeout(() => {
+            for (let i = 0; i < NUM_ARRAY_BARS; i++) {
+                arrayBars[i].style.backgroundColor = PRIMARY_COLOR;
+            }
+        }, animationsLength * ANIMATION_SPEED_MS);
     }
 
     // Temporarily disables buttons until sorting is complete.
