@@ -4,12 +4,12 @@ import * as SortingAlgorithms from '../SortingAlgorithms/SortingAlgorithms.js'
 
 const DEBUG = false;
 
-const ANIMATION_SPEED_MS = 50;
+const ANIMATION_SPEED_MS = 2000;
 const NUM_ARRAY_BARS = 15;
 
 // Colors used in the sorting visualizer.
 const PRIMARY_COLOR = '#484f8f';
-const CURRENT_COMPARISON = 'pink';
+const CURRENT_COMPARISON = 'yellow';
 const HIGHER_NUM_COLOR = 'red';
 const LOWER_NUM_COLOR = 'green';
 const SINGLE_SELECTION = 'yellow';
@@ -158,7 +158,38 @@ export default class SortingVisualizer extends React.Component {
         const animations = results[0];
         const sortedArray = results[1];
 
+        const arrayBars = document.getElementsByClassName('array-bar');
+
+        let [aIndexPrev, bIndexPrev] = [NUM_ARRAY_BARS - 1, NUM_ARRAY_BARS - 1];
+
+        for (let i = 0; i < animations.length; i++) {
+            const [state, aIndex, bIndex, height] = animations[i];
+
+            const aStyle = arrayBars[aIndex].style;
+            const bStyle = arrayBars[bIndex].style;
+            const aStylePrev = arrayBars[aIndexPrev].style;
+            const bStylePrev = arrayBars[bIndexPrev].style;
+
+            if (state === -1) { // Highlighting hi and lo.
+                this.updateColors(aStyle, bStyle, CURRENT_COMPARISON, CURRENT_COMPARISON, aStylePrev, bStylePrev, i);
+            } else if (state === 0) {
+                this.updateColors(aStyle, bStyle, LOWER_NUM_COLOR, HIGHER_NUM_COLOR, aStylePrev, bStylePrev, i);
+            } else {
+                this.updateColors(aStyle, bStyle, HIGHER_NUM_COLOR, LOWER_NUM_COLOR, aStylePrev, bStylePrev, i);
+                let swapHeight = animations[i][4];
+
+                setTimeout(() => {
+                    aStyle.height = `${height}vh`;
+                    bStyle.height = `${swapHeight}vh`;
+                }, i * ANIMATION_SPEED_MS);
+            }
+            aIndexPrev = aIndex;
+            bIndexPrev = bIndex;
+        }
+
+        this.disableButtons(animations.length);
         this.updateArrayState(sortedArray, animations.length);
+        this.resetColors(arrayBars, animations.length);
     }
 
     // Handles animations for Quick Sort.

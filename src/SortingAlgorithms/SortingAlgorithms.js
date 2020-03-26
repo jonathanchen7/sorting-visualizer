@@ -109,15 +109,21 @@ function mergeSortHelp(animations, arr, aux, lo, hi) {
 }
 
 function mergeSortCombine(animations, arr, aux, lo, mid, hi) {
+    animations.push([-1, lo, hi, 0]);
     let index = lo;
     let i = lo;
     let j = mid + 1;
     
     // Sorts the two halves in the auxillary array. 
     while (i <= mid && j <= hi) {
+        
         if (arr[i] <= arr[j]) {
+            animations.push([0, i, j, 0]);
+            animations.push([1, index, i, arr[i], arr[index]]);
             aux[index++] = arr[i++];
         } else {
+            animations.push([0, j, i, 0]);
+            animations.push([1, index, i, arr[j], arr[index]]);
             aux[index++] = arr[j++];
         }
     }
@@ -126,6 +132,7 @@ function mergeSortCombine(animations, arr, aux, lo, mid, hi) {
     Does not need to be done with the second half because they would already be in the
     proper locations. */    
     while (i <= mid) { 
+        animations.push([1, index, i, arr[i], arr[index]]);
         aux[index++] = arr[i++];
     }
 
