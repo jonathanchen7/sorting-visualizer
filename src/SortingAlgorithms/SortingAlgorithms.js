@@ -1,17 +1,18 @@
-// Bubble Sort implementation.
+// Bubble Sort implementation that returns both an array of animations + the sorted array.
 export const bubbleSort = arr => {
     const animations = [];
     let len = arr.length;
     let anySwaps = false;
 
+    // Each iteration swaps the greatest element to sorted position on the right.
     for (let i = 0; i < len - 1; i++) {
         anySwaps = false;
         for (let j = 0; j < len - 1 - i; j++) {
             animations.push([-1, j, j + 1])
-            if (arr[j] > arr[j + 1]) {
-                anySwaps = true;
+            if (arr[j] > arr[j + 1]) { // Swaps adjacent bars if left is greater than right.
                 animations.push([0, j + 1, j]);
                 animations.push([2, j + 1, j]);
+                anySwaps = true;
                 let temp = arr[j];
                 arr[j] = arr[j + 1];
                 arr[j + 1] = temp;
@@ -20,6 +21,7 @@ export const bubbleSort = arr => {
             }
         }
 
+        // Breaks if there were no swaps in the previous loop (array is sorted).
         if (anySwaps === false) {
             break;
         }
@@ -30,7 +32,7 @@ export const bubbleSort = arr => {
     ];
 }
 
-// Insertion Sort implementation.
+// Insertion Sort implementation that returns both an array of animations + the sorted array.
 export const insertionSort = arr => {
     const animations = [];
     let len = arr.length;
@@ -60,14 +62,12 @@ export const insertionSort = arr => {
 // Selection Sort implementation that returns both an array of animations + the sorted array.
 export const selectionSort = arr => {
     const animations = [];
-    let len = arr.length;
 
-    for (let i = 0; i < len; i++) {
+    // Each iteration swaps the least element to sorted position on the left.
+    for (let i = 0; i < arr.length; i++) {
         let minIndex = i;
-        /* Each comparison pushes a pair of indices to animations, with the index corresponding to the 
-        lower value as the first index in the pair.*/
-        for (let j = i + 1; j < len; j++) {
-            if (arr[minIndex] > arr[j]) {
+        for (let j = i + 1; j < arr.length; j++) {
+            if (arr[minIndex] > arr[j]) { // Updates minIdex if the current value is the new min. 
                 animations.push([0, j, minIndex]);
                 minIndex = j;
             } else {
@@ -88,9 +88,10 @@ export const selectionSort = arr => {
     ];
 };
 
-export const quickSort = (arr, lo, hi) => {
+export const mergeSort = (arr) => {
     const animations = [];
-    quickSortHelp(animations, arr, lo, hi);
+    let aux = arr.slice();
+    mergeSortHelp(animations, arr, aux, 0, arr.length - 1);
 
     return [
         animations,
@@ -98,7 +99,53 @@ export const quickSort = (arr, lo, hi) => {
     ];
 };
 
-// Recrusive helper method for Quick Sort.
+function mergeSortHelp(animations, arr, aux, lo, hi) {
+    if (lo < hi) {
+        let mid = (lo + hi) / 2;
+        mergeSortHelp(animations, arr, lo, mid);
+        mergeSortHelp(animations, arr, mid + 1, hi);
+
+        mergeSortCombine(animations, arr, aux, lo, mid, hi);
+    }
+}
+
+function mergeSortCombine(animations, arr, aux, lo, mid, hi) {
+    let i = lo;
+    let j = mid + 1;
+    let index = lo;
+    while (i <= mid && j <= hi) {
+        if (arr[i] < arr[j]) {
+            aux[index++] = arr[i++];
+        } else {
+            aux[index++] = arr[j++];
+        }
+    }
+
+    while (i <= mid) {
+        aux[index++] = arr[i++];
+    }
+    while (j <= hi) {
+        aux[index++] = arr[j++];
+    }
+
+    for (let i = lo; i <= hi; i++) {
+        arr[i] = aux[i];
+    }
+
+}
+
+// Quick Sort implementation that returns both an array of animations + the sorted array.
+export const quickSort = (arr) => {
+    const animations = [];
+    quickSortHelp(animations, arr, 0, arr.length - 1);
+
+    return [
+        animations,
+        arr
+    ];
+};
+
+// Recursive helper method for Quick Sort.
 function quickSortHelp(animations, arr, lo, hi) {
     if (lo < hi) {
         var partitionIndex = quickSortPartition(animations, arr, lo, hi);
@@ -108,12 +155,14 @@ function quickSortHelp(animations, arr, lo, hi) {
     }
 }
 
+// Partition method for Quick Sort.
 function quickSortPartition(animations, arr, lo, hi) {
     animations.push([-2, lo, hi]);
     animations.push([-1, hi, hi]);
     const pivot = arr[hi];
     let swapIndex = lo;
 
+    // Iterates through the current partition.
     for (let i = lo; i < hi; i++) {
         // If the current element is smaller than the pivot, swap with the element at swapIndex.
         if (arr[i] < pivot) {
@@ -127,6 +176,7 @@ function quickSortPartition(animations, arr, lo, hi) {
             animations.push([0, hi, i]);
         }
     }
+    // Swaps pivot with current swapIndex (now elements to the left <= pivot <= elements to the right)
     animations.push([2, hi, swapIndex]);
     let temp = arr[hi];
     arr[hi] = arr[swapIndex];

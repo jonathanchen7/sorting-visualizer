@@ -159,7 +159,7 @@ export default class SortingVisualizer extends React.Component {
 
     // Handles animations for Quick Sort.
     quickSort() {
-        const results = SortingAlgorithms.quickSort(this.state.array.slice(), 0, NUM_ARRAY_BARS - 1);
+        const results = SortingAlgorithms.quickSort(this.state.array.slice());
         const animations = results[0];
         const sortedArray = results[1];
 
@@ -346,7 +346,7 @@ export default class SortingVisualizer extends React.Component {
                     <button className="bottom-button" onClick={() => this.selectionSort()}>selection</button>
                     <button className="bottom-button" onClick={() => this.mergeSort()}>merge</button>
                     <button className="bottom-button" onClick={() => this.quickSort()}>quick</button>
-                    <button className="bottom-button" id="sort-button" onClick={() => alert("Not implemented yet!")}>sort!</button>
+                    {/* <button className="bottom-button" id="sort-button" onClick={() => alert("Not implemented yet!")}>sort!</button> */}
                 </div>
             </div>
         );
