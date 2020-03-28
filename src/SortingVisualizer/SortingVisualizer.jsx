@@ -4,8 +4,8 @@ import * as SortingAlgorithms from '../SortingAlgorithms/SortingAlgorithms.js'
 
 const DEBUG = false;
 
-const ANIMATION_SPEED_MS = 50;
-const NUM_ARRAY_BARS = 15;
+const ANIMATION_SPEED_MS = 5;
+const NUM_ARRAY_BARS = 100;
 const SORTED_MS = 1500;
 
 // Colors used in the sorting visualizer.
@@ -14,8 +14,6 @@ const SELECTION_COLOR = 'yellow';
 const HIGHER_NUM_COLOR = 'red';
 const LOWER_NUM_COLOR = 'green';
 const SORTED_COLOR = 'green';
-
-// const PRIMARY_COLOR = '#989dca';
 
 export default class SortingVisualizer extends React.Component {
     constructor(props) {
@@ -31,12 +29,12 @@ export default class SortingVisualizer extends React.Component {
         this.resetArray();
     }
 
-    // Creates an int array of length ___
+    // Generates a random int array of length NUM_ARRAY_BARS.
     resetArray() {
         const array = [];
 
         for (let i = 0; i < NUM_ARRAY_BARS; i++) {
-            array.push(randomIntFromInterval(5, 65));
+            array.push(this.randomIntFromInterval(5, 65));
         }
 
         this.setState({ array });
@@ -60,7 +58,7 @@ export default class SortingVisualizer extends React.Component {
             const aStylePrev = arrayBars[aIndexPrev].style;
             const bStylePrev = arrayBars[bIndexPrev].style;
 
-            if (swap === -1) { // Selecting two bars.
+            if (swap === -1) { // Highlights currently selected bars.
                 this.updateColors(aStyle, bStyle, SELECTION_COLOR, SELECTION_COLOR, aStylePrev, bStylePrev, i);
             } else if (swap === 0) { // Comparing two bars.
                 this.updateColors(aStyle, bStyle, LOWER_NUM_COLOR, HIGHER_NUM_COLOR, aStylePrev, bStylePrev, i);
@@ -95,17 +93,14 @@ export default class SortingVisualizer extends React.Component {
             const aStylePrev = arrayBars[aIndexPrev].style;
             const bStylePrev = arrayBars[bIndexPrev].style;
 
-            if (swap === -1) {
+            if (swap === -1) { // Highlights currently selected bar.
                 this.updateColors(aStyle, bStyle, SELECTION_COLOR, SELECTION_COLOR, aStylePrev, bStylePrev, i);
-            } else if (swap === 0) {
-                this.updateColors(aStyle, bStyle, SELECTION_COLOR, SELECTION_COLOR, aStylePrev, bStylePrev, i);
-            } else if (swap === 1) {
+            } else if (swap === 0) { // Comparing two bars.
                 this.updateColors(aStyle, bStyle, LOWER_NUM_COLOR, HIGHER_NUM_COLOR, aStylePrev, bStylePrev, i);
-            } else {
+            } else { // Swaps positions of two bars. 
                 this.updateColors(aStyle, bStyle, HIGHER_NUM_COLOR, LOWER_NUM_COLOR, aStylePrev, bStylePrev, i);
                 this.swapBars(aStyle, bStyle, i);
             }
-
             aIndexPrev = aIndex;
             bIndexPrev = bIndex;
         }
@@ -136,13 +131,13 @@ export default class SortingVisualizer extends React.Component {
             const aStylePrev = arrayBars[aIndexPrev].style;
             const bStylePrev = arrayBars[bIndexPrev].style;
 
-            if (swap) {
-                if (DEBUG) console.log("Swap: " + animations[i]);
-                this.updateColors(aStyle, bStyle, LOWER_NUM_COLOR, HIGHER_NUM_COLOR, aStylePrev, bStylePrev, i);
-                this.swapBars(aStyle, bStyle, i);
-            } else {
+            if (!swap) { // Comparing two bars.
                 if (DEBUG) console.log("Compare: " + animations[i]);
                 this.updateColors(aStyle, bStyle, LOWER_NUM_COLOR, HIGHER_NUM_COLOR, aStylePrev, bStylePrev, i);
+            } else { // Swaps positions of two bars.
+                if (DEBUG) console.log("Swap: " + animations[i]);
+                this.updateColors(aStyle, bStyle, HIGHER_NUM_COLOR, LOWER_NUM_COLOR, aStylePrev, bStylePrev, i);
+                this.swapBars(aStyle, bStyle, i);
             }
             aIndexPrev = aIndex;
             bIndexPrev = bIndex;
@@ -175,10 +170,10 @@ export default class SortingVisualizer extends React.Component {
 
             if (state === -1) { // Highlighting hi and lo.
                 this.updateColors(aStyle, bStyle, SELECTION_COLOR, SELECTION_COLOR, aStylePrev, bStylePrev, i);
-            } else if (state === 0) {
+            } else if (state === 0) { // Comparing two bars from partitions.
                 this.updateColors(aStyle, bStyle, LOWER_NUM_COLOR, HIGHER_NUM_COLOR, aStylePrev, bStylePrev, i);
-            } else {
-                this.updateColors(aStyle, bStyle, LOWER_NUM_COLOR, HIGHER_NUM_COLOR, aStylePrev, bStylePrev, i);
+            } else { // Updating bar at swapIndex with new height (can't fully visualize because of aux array).
+                this.updateColors(aStyle, bStyle, HIGHER_NUM_COLOR, LOWER_NUM_COLOR, aStylePrev, bStylePrev, i);
                 let newHeight = animations[i][3];
 
                 setTimeout(() => {
@@ -280,19 +275,19 @@ export default class SortingVisualizer extends React.Component {
 
     // Temporarily disables buttons until sorting is complete.
     disableButtons(numAnimations) {
-        // const buttons = document.getElementsByTagName('button');
+        const buttons = document.getElementsByTagName('button');
+        console.log("test");
 
-        // for (let i = 0; i < buttons.length; i++) {
-        //     const button = buttons[i];
-        //     button.disabled = true;
-        // }
+        for (let i = 0; i < buttons.length; i++) {
+            buttons[i].disabled = true;
+        }
 
-        // setTimeout(() => {
-        //     for (let i = 0; i < buttons.length; i++) {
-        //         const button = buttons[i];
-        //         button.disabled = false;
-        //     }
-        // }, (numAnimations * ANIMATION_SPEED_MS) + SORTED_MS);
+        // Enables buttons after all animations have finished.
+        setTimeout(() => {
+            for (let i = 0; i < buttons.length; i++) {
+                buttons[i].disabled = false;
+            }
+        }, (numAnimations * ANIMATION_SPEED_MS) + SORTED_MS);
     }
 
     // Updates the state once all animations have finished.
@@ -311,16 +306,16 @@ export default class SortingVisualizer extends React.Component {
         const testArrays = [];
         for (let i = 0; i < 100; i++) {
             let array = [];
-            const len = randomIntFromInterval(1, 1000);
+            const len = this.randomIntFromInterval(1, 1000);
             for (let j = 0; j < len; j++) {
-                array.push(randomIntFromInterval(-1000, 1000));
+                array.push(this.randomIntFromInterval(-1000, 1000));
             }
             testArrays[i] = array;
         }
 
         let testResults = [0, 0, 0, 0, 0];
 
-        for (let i = 0; i < 100; i++) {
+        for (let i = 0; i < 100; i++) { // Tests sorts on 100 unique arrays.
             const javaScriptSort = testArrays[i].slice().sort((a, b) => a - b);
             const bubbleSortArray = SortingAlgorithms.bubbleSort(testArrays[i].slice())[1];
             const insertionSortArray = SortingAlgorithms.insertionSort(testArrays[i].slice())[1];
@@ -328,25 +323,12 @@ export default class SortingVisualizer extends React.Component {
             const mergeSortArray = SortingAlgorithms.mergeSort(testArrays[i].slice())[1];
             const quickSortArray = SortingAlgorithms.quickSort(testArrays[i].slice())[1];
 
-            if (this.arraysAreEqual(javaScriptSort, bubbleSortArray)) {
-                testResults[0]++;
-            }
-
-            if (this.arraysAreEqual(javaScriptSort, insertionSortArray)) {
-                testResults[1]++;
-            }
-
-            if (this.arraysAreEqual(javaScriptSort, selectionSortArray)) {
-                testResults[2]++;
-            }
-
-            if (this.arraysAreEqual(javaScriptSort, mergeSortArray)) {
-                testResults[3]++;
-            }
-
-            if (this.arraysAreEqual(javaScriptSort, quickSortArray)) {
-                testResults[4]++;
-            }
+            // Increments corresponding value in testResults if implemented sort matches JavaScript's sort.
+            if (this.arraysAreEqual(javaScriptSort, bubbleSortArray)) testResults[0]++;
+            if (this.arraysAreEqual(javaScriptSort, insertionSortArray)) testResults[1]++;
+            if (this.arraysAreEqual(javaScriptSort, selectionSortArray)) testResults[2]++;
+            if (this.arraysAreEqual(javaScriptSort, mergeSortArray)) testResults[3]++;
+            if (this.arraysAreEqual(javaScriptSort, quickSortArray)) testResults[4]++;
         }
 
         console.log("Bubble Sort: " + testResults[0] + " correct");
@@ -366,6 +348,11 @@ export default class SortingVisualizer extends React.Component {
             if (a[i] !== b[i]) return false;
         }
         return true;
+    }
+
+    // Generates a random integer from the given interval (inclusive min/max).
+    randomIntFromInterval(min, max) {
+        return Math.floor(Math.random() * (max - min + 1) + min);
     }
 
     render() {
@@ -395,14 +382,8 @@ export default class SortingVisualizer extends React.Component {
                     <button className="bottom-button" onClick={() => this.selectionSort()}>selection</button>
                     <button className="bottom-button" onClick={() => this.mergeSort()}>merge</button>
                     <button className="bottom-button" onClick={() => this.quickSort()}>quick</button>
-                    {/* <button className="bottom-button" id="sort-button" onClick={() => alert("Not implemented yet!")}>sort!</button> */}
                 </div>
             </div>
         );
     }
-}
-
-// Generates a random integer from the given interval (inclusive min/max).
-function randomIntFromInterval(min, max) {
-    return Math.floor(Math.random() * (max - min + 1) + min);
 }

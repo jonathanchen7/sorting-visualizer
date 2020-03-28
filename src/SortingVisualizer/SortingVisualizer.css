@@ -33,11 +33,11 @@ button:hover:enabled {
     cursor: pointer;
 }
 
-/* button:disabled {
-    opacity: 70%;
+button:disabled {
+    /* opacity: 70%; */
     background-color: grey;
     cursor: default;
-} */
+}
 
 .array-container {
     margin-top: 20px;
@@ -45,11 +45,11 @@ button:hover:enabled {
 }
 
 .array-bar {
-    /* width: 10px;
-    margin: 3px; */
+    width: 10px;
+    margin: 3px;
 
-    width: 5.3vw;
-    margin: .25vw;
+    /* width: 5.3vw;
+    margin: .25vw; */
     background-color: #484f8f;
     display: inline-block;
     border-bottom: 5px solid #488F4B;

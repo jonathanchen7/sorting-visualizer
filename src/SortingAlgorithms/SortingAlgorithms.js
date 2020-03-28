@@ -45,7 +45,6 @@ export const insertionSort = arr => {
         while (currentIndex - 1 >= 0 && arr[currentIndex] < arr[currentIndex - 1]) {
             animations.push([0, currentIndex, currentIndex - 1]);
             animations.push([1, currentIndex, currentIndex - 1]);
-            animations.push([2, currentIndex, currentIndex - 1]);
             let temp = arr[currentIndex];
             arr[currentIndex] = arr[currentIndex - 1];
             arr[currentIndex - 1] = temp;
