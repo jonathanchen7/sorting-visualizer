@@ -4,7 +4,7 @@ import * as SortingAlgorithms from '../SortingAlgorithms/SortingAlgorithms.js'
 
 const DEBUG = false;
 
-const ANIMATION_SPEED_MS = 500;
+const ANIMATION_SPEED_MS = 10;
 const NUM_ARRAY_BARS = 100;
 const SORTED_MS = 1500;
 
