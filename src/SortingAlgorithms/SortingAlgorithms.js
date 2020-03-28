@@ -87,6 +87,7 @@ export const selectionSort = arr => {
     ];
 };
 
+// Merge Sort implementation that returns both an array of animations + the sorted array.
 export const mergeSort = (arr) => {
     const animations = [];
     mergeSortHelp(animations, arr, arr.slice(), 0, arr.length - 1);
@@ -97,8 +98,9 @@ export const mergeSort = (arr) => {
     ];
 };
 
+// Recursive helper method for Merge Sort.
 function mergeSortHelp(animations, arr, aux, lo, hi) {
-    if (lo < hi) {
+    if (lo < hi) { // Executes until lo and hi cross (divides the array).
         let mid = Math.floor((lo + hi) / 2);
         mergeSortHelp(animations, arr, aux, lo, mid);
         mergeSortHelp(animations, arr, aux, mid + 1, hi);
@@ -107,15 +109,15 @@ function mergeSortHelp(animations, arr, aux, lo, hi) {
     }
 }
 
+// Merging helper method for Merge Sort.
 function mergeSortCombine(animations, arr, aux, lo, mid, hi) {
     animations.push([-1, lo, hi]);
     let index = lo;
     let i = lo;
     let j = mid + 1;
     
-    // Sorts the two halves in the auxillary array. 
+    // Sorts the two sections in their proper places in the auxillary array. 
     while (i <= mid && j <= hi) {
-        
         if (arr[i] <= arr[j]) {
             animations.push([0, i, j]);
             animations.push([1, index, index, arr[i]]);

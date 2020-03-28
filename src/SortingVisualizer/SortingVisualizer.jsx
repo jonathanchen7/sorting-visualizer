@@ -4,16 +4,16 @@ import * as SortingAlgorithms from '../SortingAlgorithms/SortingAlgorithms.js'
 
 const DEBUG = false;
 
-const ANIMATION_SPEED_MS = 5;
+const ANIMATION_SPEED_MS = 500;
 const NUM_ARRAY_BARS = 100;
 const SORTED_MS = 1500;
 
 // Colors used in the sorting visualizer.
 const PRIMARY_COLOR = '#484f8f';
-const SELECTION_COLOR = 'yellow';
-const HIGHER_NUM_COLOR = 'red';
-const LOWER_NUM_COLOR = 'green';
-const SORTED_COLOR = 'green';
+const SELECTION_COLOR = '#a6c64c';
+const HIGHER_NUM_COLOR = '#c80003';
+const LOWER_NUM_COLOR = '#405d3a';
+const SORTED_COLOR = '#488f4b';
 
 export default class SortingVisualizer extends React.Component {
     constructor(props) {
