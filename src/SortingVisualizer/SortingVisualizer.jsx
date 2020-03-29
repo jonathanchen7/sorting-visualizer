@@ -21,6 +21,8 @@ export default class SortingVisualizer extends React.Component {
             array: [],
             animationSpeed: 50,
             numBars: 50,
+            barWidth: 1.4,
+            barMargin: .2,
         };
     }
 
@@ -365,17 +367,36 @@ export default class SortingVisualizer extends React.Component {
         this.setState({ animationSpeed: newValue });
     }
 
-    updateNumBars = (e) => {
+    updateBars = (e) => {
         let value = parseInt(e.target.value);
-        let newValue;
 
-        if (value === 10) newValue = 10;
-        else if (value === 20) newValue = 25;
-        else if (value === 30) newValue = 50;
-        else if (value === 40) newValue = 75;
-        else newValue = 100;
+        if (value === 10) {
+            var newValue = 15;
+            var newWidth = 5.5;
+            var newMargin = .25;
+        } else if (value === 20) {
+            var newValue = 25;
+            var newWidth = 3.1;
+            var newMargin = .25;
+        } else if (value === 30) {
+            var newValue = 50;
+            var newWidth = 1.4;
+            var newMargin = .2;
+        } else if (value === 40) {
+            var newValue = 75;
+            var newWidth = .9;
+            var newMargin = .15;
+        } else {
+            var newValue = 100;
+            var newWidth = .6;
+            var newMargin = .15;
+        }
 
-        this.setState({ numBars: newValue });
+        this.setState({ 
+            numBars: newValue,
+            barWidth: newWidth,
+            barMargin: newMargin
+        });
         this.resetArray(newValue);
     }
 
@@ -393,7 +414,7 @@ export default class SortingVisualizer extends React.Component {
                     <input type="range" id="volume" defaultValue="30" min="10" max="50"
                         step="10" onInput={this.updateAnimationSpeed} />
                     <input type="range" id="volume" defaultValue="30" min="10" max="50"
-                        step="10" onInput={this.updateNumBars} />
+                        step="10" onInput={this.updateBars} />
                     {/* <button className="center-button" onClick={() => this.testAlgorithms()}>test algorithms</button> */}
                 </div>
                 <div className="array-container">
@@ -401,7 +422,12 @@ export default class SortingVisualizer extends React.Component {
                         <div
                             className="array-bar"
                             key={idx}
-                            style={{ height: `${value}vh` }}
+                            style={{
+                                height: `${value}vh`,
+                                width: `${this.state.barWidth}vw`,
+                                margin: `${this.state.barMargin}vw`,
+                            }}
+
                         ></div>
                     ))}
                 </div>
