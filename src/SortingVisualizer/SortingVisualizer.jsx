@@ -367,7 +367,7 @@ export default class SortingVisualizer extends React.Component {
         let newWidth = (90 / newValue) * .875;
         let newMargin = ((90 / newValue) - newWidth) / 2;
 
-        this.setState({ 
+        this.setState({
             numBars: newValue,
             barWidth: newWidth,
             barMargin: newMargin
@@ -385,11 +385,10 @@ export default class SortingVisualizer extends React.Component {
                 </header>
 
                 <div>
+                    <input className="range-selection" type="range" defaultValue="7" min="3" max="11" step="2" onInput={this.updateAnimationSpeed} />
                     <button className="center-button" onClick={() => this.resetArray(this.state.numBars)}>generate new array</button>
-                    <input type="range" defaultValue="7" min="3" max="11"
-                        step="2" onInput={this.updateAnimationSpeed} />
-                    <input type="range" defaultValue="6" min="2" max="10"
-                        step="2" onInput={this.updateBars} />
+                    <input className="range-selection" type="range" defaultValue="6" min="2" max="10" step="2" onInput={this.updateBars} />
+
                     {/* <button className="center-button" onClick={() => this.testAlgorithms()}>test algorithms</button> */}
                 </div>
                 <div className="array-container">
