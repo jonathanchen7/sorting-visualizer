@@ -12,6 +12,7 @@ const SELECTION_COLOR = '#a6c64c';
 const HIGHER_NUM_COLOR = '#c80003';
 const LOWER_NUM_COLOR = '#405d3a';
 const SORTED_COLOR = '#488f4b';
+const TIMEOUTS = [];
 
 export default class SortingVisualizer extends React.Component {
     constructor(props) {
@@ -75,8 +76,8 @@ export default class SortingVisualizer extends React.Component {
         }
 
         this.disableButtons(animations.length);
-        this.updateArrayState(sortedArray, animations.length);
         this.resetColors(arrayBars, animations.length);
+        this.updateArrayState(sortedArray, animations.length);
     }
 
     // Handles animations for Insertion Sort.
@@ -110,8 +111,8 @@ export default class SortingVisualizer extends React.Component {
         }
 
         this.disableButtons(animations.length);
-        this.updateArrayState(sortedArray, animations.length);
         this.resetColors(arrayBars, animations.length);
+        this.updateArrayState(sortedArray, animations.length);
     }
 
     // Handles animations for Selection Sort.
@@ -148,8 +149,8 @@ export default class SortingVisualizer extends React.Component {
         }
 
         this.disableButtons(animations.length);
-        this.updateArrayState(sortedArray, animations.length);
         this.resetColors(arrayBars, animations.length);
+        this.updateArrayState(sortedArray, animations.length);
     }
 
     // Handles animations for Merge Sort.
@@ -178,17 +179,17 @@ export default class SortingVisualizer extends React.Component {
                 this.updateColors(aStyle, bStyle, HIGHER_NUM_COLOR, LOWER_NUM_COLOR, aStylePrev, bStylePrev, i);
                 let newHeight = animations[i][3];
 
-                setTimeout(() => {
+                TIMEOUTS.push(setTimeout(() => {
                     aStyle.height = `${newHeight}vh`;
-                }, i * this.state.animationSpeed);
+                }, i * this.state.animationSpeed));
             }
             aIndexPrev = aIndex;
             bIndexPrev = bIndex;
         }
 
         this.disableButtons(animations.length);
-        this.updateArrayState(sortedArray, animations.length);
         this.resetColors(arrayBars, animations.length);
+        this.updateArrayState(sortedArray, animations.length);
     }
 
     // Handles animations for Quick Sort.
@@ -237,27 +238,31 @@ export default class SortingVisualizer extends React.Component {
         }
 
         this.disableButtons(animations.length);
-        this.updateArrayState(sortedArray, animations.length);
         this.resetColors(arrayBars, animations.length);
+        this.updateArrayState(sortedArray, animations.length);
+    }
+
+    skipAnimations() {
+
     }
 
     // Resets the bars used in the previous animation to the primary color and updates the colors of bars A and B. 
     updateColors(aStyle, bStyle, aColor, bColor, aStylePrev, bStylePrev, i) {
-        setTimeout(() => {
+        TIMEOUTS.push(setTimeout(() => {
             aStylePrev.backgroundColor = PRIMARY_COLOR;
             bStylePrev.backgroundColor = PRIMARY_COLOR;
             aStyle.backgroundColor = aColor;
             bStyle.backgroundColor = bColor;
-        }, i * this.state.animationSpeed);
+        }, i * this.state.animationSpeed));
     }
 
     // Swaps the heights of bars A and B.
     swapBars(aStyle, bStyle, i) {
-        setTimeout(() => {
+        TIMEOUTS.push(setTimeout(() => {
             let temp = aStyle.height;
             aStyle.height = bStyle.height;
             bStyle.height = temp;
-        }, i * this.state.animationSpeed);
+        }, i * this.state.animationSpeed));
     }
 
     // Resets the colors of all array bars to the primary color.
@@ -278,15 +283,25 @@ export default class SortingVisualizer extends React.Component {
     // Temporarily disables buttons until sorting is complete.
     disableButtons(numAnimations) {
         const buttons = document.getElementsByTagName('button');
+        const finishButton = document.getElementById('finish-button');
+        const sliders = document.getElementsByTagName('input');
 
         for (let i = 0; i < buttons.length; i++) {
             buttons[i].disabled = true;
+        }
+        finishButton.disabled = false;
+        for (let i = 0; i < sliders.length; i++) {
+            sliders[i].disabled = true;
         }
 
         // Enables buttons after all animations have finished.
         setTimeout(() => {
             for (let i = 0; i < buttons.length; i++) {
                 buttons[i].disabled = false;
+            }
+            finishButton.disabled = true;
+            for (let i = 0; i < sliders.length; i++) {
+                sliders[i].disabled = false;
             }
         }, (numAnimations * this.state.animationSpeed) + SORTED_MS);
     }
@@ -384,7 +399,7 @@ export default class SortingVisualizer extends React.Component {
                     <div id="title">sorting visualizer</div>
                 </header>
 
-                <div>
+                <div id="top-controls">
                     <input className="range-selection" type="range" defaultValue="7" min="3" max="11" step="2" onInput={this.updateAnimationSpeed} />
                     <button className="center-button" onClick={() => this.resetArray(this.state.numBars)}>generate new array</button>
                     <input className="range-selection" type="range" defaultValue="6" min="2" max="10" step="2" onInput={this.updateBars} />
@@ -411,6 +426,7 @@ export default class SortingVisualizer extends React.Component {
                     <button className="bottom-button" onClick={() => this.selectionSort()}>selection</button>
                     <button className="bottom-button" onClick={() => this.mergeSort()}>merge</button>
                     <button className="bottom-button" onClick={() => this.quickSort()}>quick</button>
+                    <button id="finish-button" className="bottom-button" disabled onClick={() => this.skipAnimations()}>finish</button>
                 </div>
             </div>
         );
