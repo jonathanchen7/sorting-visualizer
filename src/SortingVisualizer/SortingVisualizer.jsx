@@ -260,7 +260,6 @@ export default class SortingVisualizer extends React.Component {
         for (let i = 0; i < buttons.length; i++) {
             buttons[i].disabled = false;
         }
-        finishButton.disabled = true;
         for (let i = 0; i < sliders.length; i++) {
             sliders[i].disabled = false;
         }
