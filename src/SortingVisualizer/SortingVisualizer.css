@@ -34,8 +34,7 @@ button:hover:enabled {
 }
 
 button:disabled {
-    /* opacity: 70%; */
-    background-color: grey;
+    background-color: #AAAAAA;
     cursor: default;
 }
 

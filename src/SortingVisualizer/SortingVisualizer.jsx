@@ -352,6 +352,10 @@ export default class SortingVisualizer extends React.Component {
         return Math.floor(Math.random() * (max - min + 1) + min);
     }
 
+    changeAnimationSpeed(value) {
+        console.log(value);
+    }
+
     render() {
         const { array } = this.state;
 
@@ -362,6 +366,8 @@ export default class SortingVisualizer extends React.Component {
                 </header>
                 <div>
                     <button className="center-button" onClick={() => this.resetArray()}>generate new array</button>
+                    <input type="range" id="volume" defaultValue="30" min="10" max="50"
+                        step="10" onInput={() => this.changeAnimationSpeed()} />
                     {/* <button className="center-button" onClick={() => this.testAlgorithms()}>test algorithms</button> */}
                 </div>
                 <div className="array-container">
