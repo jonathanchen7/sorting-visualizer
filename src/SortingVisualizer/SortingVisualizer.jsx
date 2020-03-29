@@ -154,8 +154,6 @@ export default class SortingVisualizer extends React.Component {
         const animations = results[0];
         const sortedArray = results[1];
 
-        console.log(animations);
-
         const arrayBars = document.getElementsByClassName('array-bar');
 
         let [aIndexPrev, bIndexPrev] = [NUM_ARRAY_BARS - 1, NUM_ARRAY_BARS - 1];
@@ -276,7 +274,6 @@ export default class SortingVisualizer extends React.Component {
     // Temporarily disables buttons until sorting is complete.
     disableButtons(numAnimations) {
         const buttons = document.getElementsByTagName('button');
-        console.log("test");
 
         for (let i = 0; i < buttons.length; i++) {
             buttons[i].disabled = true;
