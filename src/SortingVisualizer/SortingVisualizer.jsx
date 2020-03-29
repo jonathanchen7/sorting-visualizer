@@ -19,10 +19,10 @@ export default class SortingVisualizer extends React.Component {
 
         this.state = {
             array: [],
-            animationSpeed: 50,
-            numBars: 50,
-            barWidth: 1.4,
-            barMargin: .2,
+            animationSpeed: 128,
+            numBars: 39,
+            barWidth: 2.01923077,
+            barMargin: .14423077,
         };
     }
 
@@ -38,6 +38,8 @@ export default class SortingVisualizer extends React.Component {
         for (let i = 0; i < value; i++) {
             array.push(this.randomIntFromInterval(5, 65));
         }
+
+        array[this.randomIntFromInterval(0, value - 1)] = 65;
 
         this.setState({ array });
     }
@@ -361,28 +363,9 @@ export default class SortingVisualizer extends React.Component {
 
     updateBars = (e) => {
         let value = parseInt(e.target.value);
-
-        if (value === 10) {
-            var newValue = 15;
-            var newWidth = 5.5;
-            var newMargin = .25;
-        } else if (value === 20) {
-            var newValue = 25;
-            var newWidth = 3.1;
-            var newMargin = .25;
-        } else if (value === 30) {
-            var newValue = 50;
-            var newWidth = 1.4;
-            var newMargin = .2;
-        } else if (value === 40) {
-            var newValue = 75;
-            var newWidth = .9;
-            var newMargin = .15;
-        } else {
-            var newValue = 100;
-            var newWidth = .6;
-            var newMargin = .15;
-        }
+        let newValue = parseInt(Math.pow(10, 1 + (value / 10)));
+        let newWidth = (90 / newValue) * .875;
+        let newMargin = ((90 / newValue) - newWidth) / 2;
 
         this.setState({ 
             numBars: newValue,
@@ -405,8 +388,8 @@ export default class SortingVisualizer extends React.Component {
                     <button className="center-button" onClick={() => this.resetArray(this.state.numBars)}>generate new array</button>
                     <input type="range" defaultValue="7" min="3" max="11"
                         step="2" onInput={this.updateAnimationSpeed} />
-                    <input type="range" defaultValue="30" min="10" max="50"
-                        step="10" onInput={this.updateBars} />
+                    <input type="range" defaultValue="6" min="2" max="10"
+                        step="2" onInput={this.updateBars} />
                     {/* <button className="center-button" onClick={() => this.testAlgorithms()}>test algorithms</button> */}
                 </div>
                 <div className="array-container">
