@@ -243,7 +243,30 @@ export default class SortingVisualizer extends React.Component {
     }
 
     skipAnimations() {
+        const results = SortingAlgorithms.insertionSort(this.state.array.slice());
+        const sortedArray = results[1];
 
+        const arrayBars = document.getElementsByClassName('array-bar');
+        const buttons = document.getElementsByTagName('button');
+        const finishButton = document.getElementById('finish-button');
+        const sliders = document.getElementsByTagName('input');
+
+        for (let i = 0; i < TIMEOUTS.length; i++) {
+            clearTimeout(TIMEOUTS[i]);
+        }
+        for (let i = 0; i < this.state.numBars; i++) {
+            arrayBars[i].style.backgroundColor = PRIMARY_COLOR;
+        }
+        for (let i = 0; i < buttons.length; i++) {
+            buttons[i].disabled = false;
+        }
+        finishButton.disabled = true;
+        for (let i = 0; i < sliders.length; i++) {
+            sliders[i].disabled = false;
+        }
+
+        this.resetColors(arrayBars, 0);
+        this.setState({ array: sortedArray });
     }
 
     // Resets the bars used in the previous animation to the primary color and updates the colors of bars A and B. 
@@ -267,17 +290,17 @@ export default class SortingVisualizer extends React.Component {
 
     // Resets the colors of all array bars to the primary color.
     resetColors(arrayBars, numAnimations) {
-        setTimeout(() => {
+        TIMEOUTS.push(setTimeout(() => {
             for (let i = 0; i < this.state.numBars; i++) {
                 arrayBars[i].style.backgroundColor = SORTED_COLOR;
             }
-        }, numAnimations * this.state.animationSpeed);
+        }, numAnimations * this.state.animationSpeed));
 
-        setTimeout(() => {
+        TIMEOUTS.push(setTimeout(() => {
             for (let i = 0; i < this.state.numBars; i++) {
                 arrayBars[i].style.backgroundColor = PRIMARY_COLOR;
             }
-        }, (numAnimations * this.state.animationSpeed) + SORTED_MS);
+        }, (numAnimations * this.state.animationSpeed) + SORTED_MS));
     }
 
     // Temporarily disables buttons until sorting is complete.
@@ -295,22 +318,21 @@ export default class SortingVisualizer extends React.Component {
         }
 
         // Enables buttons after all animations have finished.
-        setTimeout(() => {
+        TIMEOUTS.push(setTimeout(() => {
             for (let i = 0; i < buttons.length; i++) {
                 buttons[i].disabled = false;
             }
-            finishButton.disabled = true;
             for (let i = 0; i < sliders.length; i++) {
                 sliders[i].disabled = false;
             }
-        }, (numAnimations * this.state.animationSpeed) + SORTED_MS);
+        }, (numAnimations * this.state.animationSpeed) + SORTED_MS));
     }
 
     // Updates the state once all animations have finished.
     updateArrayState(sortedArray, numAnimations) {
-        setTimeout(() => {
+        TIMEOUTS.push(setTimeout(() => {
             this.setState({ array: sortedArray });
-        }, numAnimations * this.state.animationSpeed);
+        }, numAnimations * this.state.animationSpeed));
     }
 
     // Tests the validity of all sorting algorithms.
@@ -426,7 +448,7 @@ export default class SortingVisualizer extends React.Component {
                     <button className="bottom-button" onClick={() => this.selectionSort()}>selection</button>
                     <button className="bottom-button" onClick={() => this.mergeSort()}>merge</button>
                     <button className="bottom-button" onClick={() => this.quickSort()}>quick</button>
-                    <button id="finish-button" className="bottom-button" disabled onClick={() => this.skipAnimations()}>finish</button>
+                    <button id="finish-button" className="bottom-button" onClick={() => this.skipAnimations()}>insta-sort!</button>
                 </div>
             </div>
         );
