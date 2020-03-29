@@ -4,7 +4,6 @@ import * as SortingAlgorithms from '../SortingAlgorithms/SortingAlgorithms.js'
 
 const DEBUG = false;
 
-const ANIMATION_SPEED_MS = 10;
 const NUM_ARRAY_BARS = 100;
 const SORTED_MS = 1500;
 
@@ -21,6 +20,7 @@ export default class SortingVisualizer extends React.Component {
 
         this.state = {
             array: [],
+            animationSpeed: 50,
         };
     }
 
@@ -176,7 +176,7 @@ export default class SortingVisualizer extends React.Component {
 
                 setTimeout(() => {
                     aStyle.height = `${newHeight}vh`;
-                }, i * ANIMATION_SPEED_MS);
+                }, i * this.state.animationSpeed);
             }
             aIndexPrev = aIndex;
             bIndexPrev = bIndex;
@@ -244,7 +244,7 @@ export default class SortingVisualizer extends React.Component {
             bStylePrev.backgroundColor = PRIMARY_COLOR;
             aStyle.backgroundColor = aColor;
             bStyle.backgroundColor = bColor;
-        }, i * ANIMATION_SPEED_MS);
+        }, i * this.state.animationSpeed);
     }
 
     // Swaps the heights of bars A and B.
@@ -253,7 +253,7 @@ export default class SortingVisualizer extends React.Component {
             let temp = aStyle.height;
             aStyle.height = bStyle.height;
             bStyle.height = temp;
-        }, i * ANIMATION_SPEED_MS);
+        }, i * this.state.animationSpeed);
     }
 
     // Resets the colors of all array bars to the primary color.
@@ -262,13 +262,13 @@ export default class SortingVisualizer extends React.Component {
             for (let i = 0; i < NUM_ARRAY_BARS; i++) {
                 arrayBars[i].style.backgroundColor = SORTED_COLOR;
             }
-        }, numAnimations * ANIMATION_SPEED_MS);
+        }, numAnimations * this.state.animationSpeed);
 
         setTimeout(() => {
             for (let i = 0; i < NUM_ARRAY_BARS; i++) {
                 arrayBars[i].style.backgroundColor = PRIMARY_COLOR;
             }
-        }, (numAnimations * ANIMATION_SPEED_MS) + SORTED_MS);
+        }, (numAnimations * this.state.animationSpeed) + SORTED_MS);
     }
 
     // Temporarily disables buttons until sorting is complete.
@@ -284,14 +284,14 @@ export default class SortingVisualizer extends React.Component {
             for (let i = 0; i < buttons.length; i++) {
                 buttons[i].disabled = false;
             }
-        }, (numAnimations * ANIMATION_SPEED_MS) + SORTED_MS);
+        }, (numAnimations * this.state.animationSpeed) + SORTED_MS);
     }
 
     // Updates the state once all animations have finished.
     updateArrayState(sortedArray, numAnimations) {
         setTimeout(() => {
             this.setState({ array: sortedArray });
-        }, numAnimations * ANIMATION_SPEED_MS);
+        }, numAnimations * this.state.animationSpeed);
     }
 
     // Tests the validity of all sorting algorithms.
@@ -352,8 +352,20 @@ export default class SortingVisualizer extends React.Component {
         return Math.floor(Math.random() * (max - min + 1) + min);
     }
 
-    changeAnimationSpeed(value) {
+    updateAnimationSpeed = (e) => {
+        let value = parseInt(e.target.value);
         console.log(value);
+        let newValue;
+
+        if (value === 10) newValue = 1000;
+        else if (value === 20) newValue = 500;
+        else if (value === 30) newValue = 100;
+        else if (value === 40) newValue = 50;
+        else newValue = 10;
+
+        console.log(newValue);
+        this.setState({ animationSpeed: newValue });
+        
     }
 
     render() {
@@ -364,10 +376,12 @@ export default class SortingVisualizer extends React.Component {
                 <header>
                     <div id="title">sorting visualizer</div>
                 </header>
+
                 <div>
                     <button className="center-button" onClick={() => this.resetArray()}>generate new array</button>
+                    {/* <InputRange step={10} minValue={10} maxValue={50} value={30} onChange={value => this.updateAnimationSpeed(value)} /> */}
                     <input type="range" id="volume" defaultValue="30" min="10" max="50"
-                        step="10" onInput={() => this.changeAnimationSpeed()} />
+                        step="10" onInput={this.updateAnimationSpeed} />
                     {/* <button className="center-button" onClick={() => this.testAlgorithms()}>test algorithms</button> */}
                 </div>
                 <div className="array-container">
