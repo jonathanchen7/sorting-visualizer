@@ -356,15 +356,7 @@ export default class SortingVisualizer extends React.Component {
 
     updateAnimationSpeed = (e) => {
         let value = parseInt(e.target.value);
-        let newValue;
-
-        if (value === 10) newValue = 1000;
-        else if (value === 20) newValue = 500;
-        else if (value === 30) newValue = 100;
-        else if (value === 40) newValue = 50;
-        else newValue = 10;
-
-        this.setState({ animationSpeed: newValue });
+        this.setState({ animationSpeed: Math.pow(2, (-value + 14)) });
     }
 
     updateBars = (e) => {
@@ -411,9 +403,9 @@ export default class SortingVisualizer extends React.Component {
 
                 <div>
                     <button className="center-button" onClick={() => this.resetArray(this.state.numBars)}>generate new array</button>
-                    <input type="range" id="volume" defaultValue="30" min="10" max="50"
-                        step="10" onInput={this.updateAnimationSpeed} />
-                    <input type="range" id="volume" defaultValue="30" min="10" max="50"
+                    <input type="range" defaultValue="7" min="3" max="11"
+                        step="2" onInput={this.updateAnimationSpeed} />
+                    <input type="range" defaultValue="30" min="10" max="50"
                         step="10" onInput={this.updateBars} />
                     {/* <button className="center-button" onClick={() => this.testAlgorithms()}>test algorithms</button> */}
                 </div>
