@@ -4,7 +4,6 @@ import * as SortingAlgorithms from '../SortingAlgorithms/SortingAlgorithms.js'
 
 const DEBUG = false;
 
-const NUM_ARRAY_BARS = 100;
 const SORTED_MS = 1500;
 
 // Colors used in the sorting visualizer.
@@ -21,19 +20,20 @@ export default class SortingVisualizer extends React.Component {
         this.state = {
             array: [],
             animationSpeed: 50,
+            numBars: 50,
         };
     }
 
     // Runs when the component is initially loaded.
     componentDidMount() {
-        this.resetArray();
+        this.resetArray(this.state.numBars);
     }
 
-    // Generates a random int array of length NUM_ARRAY_BARS.
-    resetArray() {
+    // Generates a random int array of length numBars.
+    resetArray(value) {
         const array = [];
 
-        for (let i = 0; i < NUM_ARRAY_BARS; i++) {
+        for (let i = 0; i < value; i++) {
             array.push(this.randomIntFromInterval(5, 65));
         }
 
@@ -48,7 +48,7 @@ export default class SortingVisualizer extends React.Component {
 
         const arrayBars = document.getElementsByClassName('array-bar');
 
-        let [aIndexPrev, bIndexPrev] = [NUM_ARRAY_BARS - 1, NUM_ARRAY_BARS - 1];
+        let [aIndexPrev, bIndexPrev] = [this.state.numBars - 1, this.state.numBars - 1];
 
         for (let i = 0; i < animations.length; i++) {
             const [swap, aIndex, bIndex] = animations[i];
@@ -83,7 +83,7 @@ export default class SortingVisualizer extends React.Component {
 
         const arrayBars = document.getElementsByClassName('array-bar');
 
-        let [aIndexPrev, bIndexPrev] = [NUM_ARRAY_BARS - 1, NUM_ARRAY_BARS - 1];
+        let [aIndexPrev, bIndexPrev] = [this.state.numBars - 1, this.state.numBars - 1];
 
         for (let i = 0; i < animations.length; i++) {
             const [swap, aIndex, bIndex] = animations[i];
@@ -121,7 +121,7 @@ export default class SortingVisualizer extends React.Component {
         if (DEBUG) console.log(animations);
 
         // Variables used to track the swapped array indices.
-        let [aIndexPrev, bIndexPrev] = [NUM_ARRAY_BARS - 1, NUM_ARRAY_BARS - 1];
+        let [aIndexPrev, bIndexPrev] = [this.state.numBars - 1, this.state.numBars - 1];
 
         for (let i = 0; i < animations.length; i++) {
             const [swap, aIndex, bIndex] = animations[i];
@@ -156,7 +156,7 @@ export default class SortingVisualizer extends React.Component {
 
         const arrayBars = document.getElementsByClassName('array-bar');
 
-        let [aIndexPrev, bIndexPrev] = [NUM_ARRAY_BARS - 1, NUM_ARRAY_BARS - 1];
+        let [aIndexPrev, bIndexPrev] = [this.state.numBars - 1, this.state.numBars - 1];
 
         for (let i = 0; i < animations.length; i++) {
             const [state, aIndex, bIndex] = animations[i];
@@ -195,7 +195,7 @@ export default class SortingVisualizer extends React.Component {
 
         const arrayBars = document.getElementsByClassName('array-bar');
 
-        let [aIndexPrev, bIndexPrev] = [NUM_ARRAY_BARS - 1, NUM_ARRAY_BARS - 1];
+        let [aIndexPrev, bIndexPrev] = [this.state.numBars - 1, this.state.numBars - 1];
 
         for (let i = 0; i < animations.length; i++) {
             const [state, aIndex, bIndex] = animations[i];
@@ -259,13 +259,13 @@ export default class SortingVisualizer extends React.Component {
     // Resets the colors of all array bars to the primary color.
     resetColors(arrayBars, numAnimations) {
         setTimeout(() => {
-            for (let i = 0; i < NUM_ARRAY_BARS; i++) {
+            for (let i = 0; i < this.state.numBars; i++) {
                 arrayBars[i].style.backgroundColor = SORTED_COLOR;
             }
         }, numAnimations * this.state.animationSpeed);
 
         setTimeout(() => {
-            for (let i = 0; i < NUM_ARRAY_BARS; i++) {
+            for (let i = 0; i < this.state.numBars; i++) {
                 arrayBars[i].style.backgroundColor = PRIMARY_COLOR;
             }
         }, (numAnimations * this.state.animationSpeed) + SORTED_MS);
@@ -354,7 +354,6 @@ export default class SortingVisualizer extends React.Component {
 
     updateAnimationSpeed = (e) => {
         let value = parseInt(e.target.value);
-        console.log(value);
         let newValue;
 
         if (value === 10) newValue = 1000;
@@ -363,9 +362,21 @@ export default class SortingVisualizer extends React.Component {
         else if (value === 40) newValue = 50;
         else newValue = 10;
 
-        console.log(newValue);
         this.setState({ animationSpeed: newValue });
-        
+    }
+
+    updateNumBars = (e) => {
+        let value = parseInt(e.target.value);
+        let newValue;
+
+        if (value === 10) newValue = 10;
+        else if (value === 20) newValue = 25;
+        else if (value === 30) newValue = 50;
+        else if (value === 40) newValue = 75;
+        else newValue = 100;
+
+        this.setState({ numBars: newValue });
+        this.resetArray(newValue);
     }
 
     render() {
@@ -378,10 +389,11 @@ export default class SortingVisualizer extends React.Component {
                 </header>
 
                 <div>
-                    <button className="center-button" onClick={() => this.resetArray()}>generate new array</button>
-                    {/* <InputRange step={10} minValue={10} maxValue={50} value={30} onChange={value => this.updateAnimationSpeed(value)} /> */}
+                    <button className="center-button" onClick={() => this.resetArray(this.state.numBars)}>generate new array</button>
                     <input type="range" id="volume" defaultValue="30" min="10" max="50"
                         step="10" onInput={this.updateAnimationSpeed} />
+                    <input type="range" id="volume" defaultValue="30" min="10" max="50"
+                        step="10" onInput={this.updateNumBars} />
                     {/* <button className="center-button" onClick={() => this.testAlgorithms()}>test algorithms</button> */}
                 </div>
                 <div className="array-container">
