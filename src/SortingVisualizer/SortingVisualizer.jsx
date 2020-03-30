@@ -46,6 +46,8 @@ export default class SortingVisualizer extends React.Component {
         this.setState({ array });
     }
 
+    // ------------------------------ SORTING ANIMATIONS --------------------------------
+
     // Handles animations for Bubble Sort.
     bubbleSort() {
         const results = SortingAlgorithms.bubbleSort(this.state.array.slice());
@@ -254,6 +256,8 @@ export default class SortingVisualizer extends React.Component {
         this.updateArrayState(sortedArray, animations.length);
     }
 
+    // ------------------------------ EXTRA FEATURES --------------------------------
+
     // Instantly sorts the array (even in the middle of sorting).
     instaSort() {
         const sortedArray = SortingAlgorithms.insertionSort(this.state.array.slice())[1];
@@ -268,75 +272,6 @@ export default class SortingVisualizer extends React.Component {
         this.disableButtons(0);
         this.resetColors(arrayBars, 0);
         this.updateArrayState(sortedArray, 0);
-    }
-
-    // Resets the bars used in the previous animation to the primary color and updates the colors of bars A and B. 
-    updateColors(aStyle, bStyle, aColor, bColor, aStylePrev, bStylePrev, i) {
-        TIMEOUTS.push(setTimeout(() => {
-            aStylePrev.backgroundColor = PRIMARY_COLOR;
-            bStylePrev.backgroundColor = PRIMARY_COLOR;
-            aStyle.backgroundColor = aColor;
-            bStyle.backgroundColor = bColor;
-        }, i * this.state.animationSpeed));
-    }
-
-    // Swaps the heights of bars A and B.
-    swapBars(aStyle, bStyle, i) {
-        TIMEOUTS.push(setTimeout(() => {
-            let temp = aStyle.height;
-            aStyle.height = bStyle.height;
-            bStyle.height = temp;
-        }, i * this.state.animationSpeed));
-    }
-
-    // Resets the colors of all array bars to the primary color.
-    resetColors(arrayBars, numAnimations) {
-        // Temporarily highlights all bars in sorted color.
-        TIMEOUTS.push(setTimeout(() => {
-            for (let i = 0; i < this.state.numBars; i++) {
-                arrayBars[i].style.backgroundColor = SORTED_COLOR;
-            }
-        }, numAnimations * this.state.animationSpeed));
-
-        // Resets all bars to primary color.
-        TIMEOUTS.push(setTimeout(() => {
-            for (let i = 0; i < this.state.numBars; i++) {
-                arrayBars[i].style.backgroundColor = PRIMARY_COLOR;
-            }
-        }, (numAnimations * this.state.animationSpeed) + SORTED_MS));
-    }
-
-    // Temporarily disables buttons until sorting is complete.
-    disableButtons(numAnimations) {
-        const buttons = document.getElementsByTagName('button');
-        const finishButton = document.getElementById('finish-button');
-        const sliders = document.getElementsByTagName('input');
-
-        for (let i = 0; i < buttons.length; i++) {
-            buttons[i].disabled = true;
-        }
-        finishButton.disabled = false;
-        for (let i = 0; i < sliders.length; i++) {
-            sliders[i].disabled = true;
-        }
-
-        // Enables buttons after all animations have finished.
-        TIMEOUTS.push(setTimeout(() => {
-            for (let i = 0; i < buttons.length; i++) {
-                buttons[i].disabled = false;
-            }
-            for (let i = 0; i < sliders.length; i++) {
-                sliders[i].disabled = false;
-            }
-        }, (numAnimations * this.state.animationSpeed) + SORTED_MS));
-    }
-
-    // Updates the state once all animations have finished.
-    updateArrayState(sortedArray, numAnimations) {
-        TIMEOUTS.push(setTimeout(() => {
-            this.setState({ array: sortedArray });
-            TIMEOUTS.splice(0, TIMEOUTS.length);
-        }, numAnimations * this.state.animationSpeed));
     }
 
     // Tests the validity of all sorting algorithms.
@@ -380,6 +315,102 @@ export default class SortingVisualizer extends React.Component {
         console.log("Quick Sort: " + testResults[4] + " correct");
     }
 
+    // Updates animation speed based on current slider value.
+    updateAnimationSpeed = (e) => {
+        let value = parseInt(e.target.value);
+        this.setState({ animationSpeed: Math.pow(2, (-value + 14)) });
+    }
+
+    // Updates number of bars + bar width + bar margin based on current slider value.
+    updateBars = (e) => {
+        let value = parseInt(e.target.value);
+        let newValue = parseInt(Math.pow(10, 1 + (value / 10)));
+        let newWidth = (90 / newValue) * .875;
+        let newMargin = ((90 / newValue) - newWidth) / 2;
+
+        this.setState({
+            numBars: newValue,
+            barWidth: newWidth,
+            barMargin: newMargin
+        });
+        
+        this.resetArray(newValue);
+    }
+
+    // ------------------------------ BACKGROUND PROCESSES --------------------------------
+
+    // Resets the bars used in the previous animation to the primary color and updates the colors of bars A and B. 
+    updateColors(aStyle, bStyle, aColor, bColor, aStylePrev, bStylePrev, i) {
+        TIMEOUTS.push(setTimeout(() => {
+            aStylePrev.backgroundColor = PRIMARY_COLOR;
+            bStylePrev.backgroundColor = PRIMARY_COLOR;
+            aStyle.backgroundColor = aColor;
+            bStyle.backgroundColor = bColor;
+        }, i * this.state.animationSpeed));
+    }
+
+    // Swaps the heights of bars A and B.
+    swapBars(aStyle, bStyle, i) {
+        TIMEOUTS.push(setTimeout(() => {
+            let temp = aStyle.height;
+            aStyle.height = bStyle.height;
+            bStyle.height = temp;
+        }, i * this.state.animationSpeed));
+    }
+
+    // Resets the colors of all array bars to the primary color.
+    resetColors(arrayBars, numAnimations) {
+        // Temporarily highlights all bars in sorted color.
+        TIMEOUTS.push(setTimeout(() => {
+            for (let i = 0; i < this.state.numBars; i++) {
+                arrayBars[i].style.backgroundColor = SORTED_COLOR;
+            }
+        }, numAnimations * this.state.animationSpeed));
+
+        // Resets all bars to primary color.
+        TIMEOUTS.push(setTimeout(() => {
+            for (let i = 0; i < this.state.numBars; i++) {
+                arrayBars[i].style.backgroundColor = PRIMARY_COLOR;
+            }
+        }, (numAnimations * this.state.animationSpeed) + SORTED_MS));
+    }
+
+    // Temporarily disables buttons until sorting is complete.
+    disableButtons(numAnimations) {
+        const buttons = document.getElementsByTagName('button');
+        const finishButton = document.getElementById('finish-button');
+        const sliders = document.getElementsByTagName('input');
+
+        // Disables all buttons except insta-sort.
+        for (let i = 0; i < buttons.length; i++) {
+            buttons[i].disabled = true;
+        }
+        finishButton.disabled = false;
+        for (let i = 0; i < sliders.length; i++) {
+            sliders[i].disabled = true;
+        }
+
+        // Enables buttons after all animations have finished.
+        TIMEOUTS.push(setTimeout(() => {
+            for (let i = 0; i < buttons.length; i++) {
+                buttons[i].disabled = false;
+            }
+            for (let i = 0; i < sliders.length; i++) {
+                sliders[i].disabled = false;
+            }
+        }, (numAnimations * this.state.animationSpeed) + SORTED_MS));
+    }
+
+    // Updates the state once all animations have finished.
+    updateArrayState(sortedArray, numAnimations) {
+        TIMEOUTS.push(setTimeout(() => {
+            this.setState({ array: sortedArray });
+            TIMEOUTS.splice(0, TIMEOUTS.length);
+        }, numAnimations * this.state.animationSpeed));
+    }
+
+    // ------------------------------ UTILITY METHODS --------------------------------
+
     // Determines whether two arrays are equal, taking order into account.
     arraysAreEqual(a, b) {
         if (a === b) return true;
@@ -397,24 +428,7 @@ export default class SortingVisualizer extends React.Component {
         return Math.floor(Math.random() * (max - min + 1) + min);
     }
 
-    updateAnimationSpeed = (e) => {
-        let value = parseInt(e.target.value);
-        this.setState({ animationSpeed: Math.pow(2, (-value + 14)) });
-    }
-
-    updateBars = (e) => {
-        let value = parseInt(e.target.value);
-        let newValue = parseInt(Math.pow(10, 1 + (value / 10)));
-        let newWidth = (90 / newValue) * .875;
-        let newMargin = ((90 / newValue) - newWidth) / 2;
-
-        this.setState({
-            numBars: newValue,
-            barWidth: newWidth,
-            barMargin: newMargin
-        });
-        this.resetArray(newValue);
-    }
+    // ------------------------------ REACT RENDER --------------------------------
 
     render() {
         const { array } = this.state;
