@@ -4,7 +4,7 @@ import * as SortingAlgorithms from '../SortingAlgorithms/SortingAlgorithms.js'
 
 const DEBUG = false;
 
-const SORTED_MS = 1500;
+const SORTED_MS = 750;
 
 // Colors used in the sorting visualizer.
 const PRIMARY_COLOR = '#484f8f';
@@ -18,6 +18,7 @@ export default class SortingVisualizer extends React.Component {
     constructor(props) {
         super(props);
 
+        // Default bar settings. 
         this.state = {
             array: [],
             animationSpeed: 128,
@@ -64,10 +65,13 @@ export default class SortingVisualizer extends React.Component {
             const bStylePrev = arrayBars[bIndexPrev].style;
 
             if (swap === -1) { // Highlights currently selected bars.
+                if (DEBUG) console.log("Select: " + animations[i]);
                 this.updateColors(aStyle, bStyle, SELECTION_COLOR, SELECTION_COLOR, aStylePrev, bStylePrev, i);
             } else if (swap === 0) { // Comparing two bars.
+                if (DEBUG) console.log("Compare: " + animations[i]);
                 this.updateColors(aStyle, bStyle, LOWER_NUM_COLOR, HIGHER_NUM_COLOR, aStylePrev, bStylePrev, i);
             } else { // Swapping positions of two bars.
+                if (DEBUG) console.log("Swap: " + animations[i]);
                 this.updateColors(aStyle, bStyle, HIGHER_NUM_COLOR, LOWER_NUM_COLOR, aStylePrev, bStylePrev, i);
                 this.swapBars(aStyle, bStyle, i);
             }
@@ -88,6 +92,8 @@ export default class SortingVisualizer extends React.Component {
 
         const arrayBars = document.getElementsByClassName('array-bar');
 
+        if (DEBUG) console.log(animations);
+
         let [aIndexPrev, bIndexPrev] = [this.state.numBars - 1, this.state.numBars - 1];
 
         for (let i = 0; i < animations.length; i++) {
@@ -99,10 +105,13 @@ export default class SortingVisualizer extends React.Component {
             const bStylePrev = arrayBars[bIndexPrev].style;
 
             if (swap === -1) { // Highlights currently selected bar.
+                if (DEBUG) console.log("Select: " + animations[i]);
                 this.updateColors(aStyle, bStyle, SELECTION_COLOR, SELECTION_COLOR, aStylePrev, bStylePrev, i);
             } else if (swap === 0) { // Comparing two bars.
+                if (DEBUG) console.log("Compare: " + animations[i]);
                 this.updateColors(aStyle, bStyle, LOWER_NUM_COLOR, HIGHER_NUM_COLOR, aStylePrev, bStylePrev, i);
             } else { // Swaps positions of two bars. 
+                if (DEBUG) console.log("Swap: " + animations[i]);
                 this.updateColors(aStyle, bStyle, HIGHER_NUM_COLOR, LOWER_NUM_COLOR, aStylePrev, bStylePrev, i);
                 this.swapBars(aStyle, bStyle, i);
             }
@@ -172,10 +181,13 @@ export default class SortingVisualizer extends React.Component {
             const bStylePrev = arrayBars[bIndexPrev].style;
 
             if (state === -1) { // Highlighting hi and lo.
+                if (DEBUG) console.log("Select: " + animations[i]);
                 this.updateColors(aStyle, bStyle, SELECTION_COLOR, SELECTION_COLOR, aStylePrev, bStylePrev, i);
             } else if (state === 0) { // Comparing two bars from partitions.
+                if (DEBUG) console.log("Compare: " + animations[i]);
                 this.updateColors(aStyle, bStyle, LOWER_NUM_COLOR, HIGHER_NUM_COLOR, aStylePrev, bStylePrev, i);
             } else { // Updating bar at swapIndex with new height (can't fully visualize because of aux array).
+                if (DEBUG) console.log("Update: " + animations[i]);
                 this.updateColors(aStyle, bStyle, HIGHER_NUM_COLOR, LOWER_NUM_COLOR, aStylePrev, bStylePrev, i);
                 let newHeight = animations[i][3];
 
@@ -211,24 +223,24 @@ export default class SortingVisualizer extends React.Component {
             const bStylePrev = arrayBars[bIndexPrev].style;
 
             if (state === -2) { // Highlighting hi and lo of current partition. 
-                if (DEBUG) console.log("lo: " + aIndex + " hi: " + bIndex);
+                if (DEBUG) console.log("Lo/Hi: " + animations[i]);
                 this.updateColors(aStyle, bStyle, SELECTION_COLOR, SELECTION_COLOR, aStylePrev, bStylePrev, i);
 
             } else if (state === -1) { // Highlighting pivot index.
-                if (DEBUG) console.log("pivot: " + aIndex);
+                if (DEBUG) console.log("Pivot: " + animations[i]);
                 this.updateColors(aStyle, bStyle, SELECTION_COLOR, SELECTION_COLOR, aStylePrev, bStylePrev, i);
 
             } else if (state === 0) { // Comparing current bar with pivot.
-                if (DEBUG) console.log("comparison: [" + aIndex + ", " + bIndex + "]");
+                if (DEBUG) console.log("Compare: " + animations[i]);
                 this.updateColors(aStyle, bStyle, LOWER_NUM_COLOR, HIGHER_NUM_COLOR, aStylePrev, bStylePrev, i);
 
             } else if (state === 1) { // Swapping current selection with swap index if less than pivot
-                if (DEBUG) console.log("swapping: [" + aIndex + ", " + bIndex + "]");
+                if (DEBUG) console.log("Swap Index: " + animations[i]);
                 this.updateColors(aStyle, bStyle, HIGHER_NUM_COLOR, LOWER_NUM_COLOR, aStylePrev, bStylePrev, i);
                 this.swapBars(aStyle, bStyle, i);
 
             } else { // Swapping pivot bar with swap index. 
-                if (DEBUG) console.log("swap pivot: [" + aIndex + ", " + bIndex + "]");
+                if (DEBUG) console.log("Swap Pivot: " + animations[i]);
                 this.updateColors(aStyle, bStyle, PRIMARY_COLOR, PRIMARY_COLOR, aStylePrev, bStylePrev, i);
                 this.swapBars(aStyle, bStyle, i);
 
@@ -242,30 +254,20 @@ export default class SortingVisualizer extends React.Component {
         this.updateArrayState(sortedArray, animations.length);
     }
 
-    skipAnimations() {
-        const results = SortingAlgorithms.insertionSort(this.state.array.slice());
-        const sortedArray = results[1];
+    // Instantly sorts the array (even in the middle of sorting).
+    instaSort() {
+        const sortedArray = SortingAlgorithms.insertionSort(this.state.array.slice())[1];
 
         const arrayBars = document.getElementsByClassName('array-bar');
-        const buttons = document.getElementsByTagName('button');
-        const finishButton = document.getElementById('finish-button');
-        const sliders = document.getElementsByTagName('input');
 
+        // Clears all animations/setTimeouts.
         for (let i = 0; i < TIMEOUTS.length; i++) {
             clearTimeout(TIMEOUTS[i]);
         }
-        for (let i = 0; i < this.state.numBars; i++) {
-            arrayBars[i].style.backgroundColor = PRIMARY_COLOR;
-        }
-        for (let i = 0; i < buttons.length; i++) {
-            buttons[i].disabled = false;
-        }
-        for (let i = 0; i < sliders.length; i++) {
-            sliders[i].disabled = false;
-        }
 
+        this.disableButtons(0);
         this.resetColors(arrayBars, 0);
-        this.setState({ array: sortedArray });
+        this.updateArrayState(sortedArray, 0);
     }
 
     // Resets the bars used in the previous animation to the primary color and updates the colors of bars A and B. 
@@ -289,12 +291,14 @@ export default class SortingVisualizer extends React.Component {
 
     // Resets the colors of all array bars to the primary color.
     resetColors(arrayBars, numAnimations) {
+        // Temporarily highlights all bars in sorted color.
         TIMEOUTS.push(setTimeout(() => {
             for (let i = 0; i < this.state.numBars; i++) {
                 arrayBars[i].style.backgroundColor = SORTED_COLOR;
             }
         }, numAnimations * this.state.animationSpeed));
 
+        // Resets all bars to primary color.
         TIMEOUTS.push(setTimeout(() => {
             for (let i = 0; i < this.state.numBars; i++) {
                 arrayBars[i].style.backgroundColor = PRIMARY_COLOR;
@@ -331,6 +335,7 @@ export default class SortingVisualizer extends React.Component {
     updateArrayState(sortedArray, numAnimations) {
         TIMEOUTS.push(setTimeout(() => {
             this.setState({ array: sortedArray });
+            TIMEOUTS.splice(0, TIMEOUTS.length);
         }, numAnimations * this.state.animationSpeed));
     }
 
@@ -447,7 +452,7 @@ export default class SortingVisualizer extends React.Component {
                     <button className="bottom-button" onClick={() => this.selectionSort()}>selection</button>
                     <button className="bottom-button" onClick={() => this.mergeSort()}>merge</button>
                     <button className="bottom-button" onClick={() => this.quickSort()}>quick</button>
-                    <button id="finish-button" className="bottom-button" onClick={() => this.skipAnimations()}>insta-sort!</button>
+                    <button id="finish-button" className="bottom-button" onClick={() => this.instaSort()}>insta-sort!</button>
                 </div>
             </div>
         );
