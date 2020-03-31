@@ -333,7 +333,7 @@ export default class SortingVisualizer extends React.Component {
             barWidth: newWidth,
             barMargin: newMargin
         });
-        
+
         this.resetArray(newValue);
     }
 
@@ -440,10 +440,15 @@ export default class SortingVisualizer extends React.Component {
                 </header>
 
                 <div id="top-controls">
-                    <input className="range-selection" type="range" defaultValue="7" min="3" max="11" step="2" onInput={this.updateAnimationSpeed} />
+                    <div className="slider">
+                        <label><span>&minus;</span>animation speed<span>+</span></label>
+                        <input className="range-selection" type="range" defaultValue="7" min="3" max="11" step="2" onInput={this.updateAnimationSpeed} />
+                    </div>
                     <button className="center-button" onClick={() => this.resetArray(this.state.numBars)}>generate new array</button>
-                    <input className="range-selection" type="range" defaultValue="6" min="2" max="10" step="2" onInput={this.updateBars} />
-
+                    <div className="slider">
+                        <label><span>&minus;</span>array size<span>+</span></label>
+                        <input className="range-selection" type="range" defaultValue="6" min="2" max="10" step="2" onInput={this.updateBars} />
+                    </div>
                     {/* <button className="center-button" onClick={() => this.testAlgorithms()}>test algorithms</button> */}
                 </div>
                 <div className="array-container">

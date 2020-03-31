@@ -38,6 +38,24 @@ button:disabled {
     cursor: default;
 }
 
+.slider {
+    display: inline-block;
+    color: black;
+}
+
+.slider label {
+    margin-bottom: 3px;
+    display: block;
+    font-size: 17px;
+}
+
+.slider span {
+    color: #484f8f;
+    font-weight: 700;
+    font-size: 17px;
+    padding: 0px 15px 0px 15px;
+}
+
 .array-container {
     margin-top: 20px;
     height: 70vh;
@@ -78,7 +96,7 @@ button:disabled {
 }
 
 #top-controls {
-    margin-top: 20px;
+    margin-top: 25px;
 }
 
 /* -------------------------- RANGE SLIDERS ----------------------------- */
