@@ -112,13 +112,12 @@ input[type=range]:focus {
 
 input[type=range]:disabled {
     opacity: 60%;
-    cursor: default;
 }
 
 input[type=range]::-webkit-slider-runnable-track {
     height: 6px;
     cursor: pointer;
-    box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+    box-shadow: 1px 1px 1px #000000;
     background: #484f8f;
     border-radius: 1.3px;
     border: 0.2px solid #010101;
@@ -126,7 +125,7 @@ input[type=range]::-webkit-slider-runnable-track {
 }
 
 input[type=range]::-webkit-slider-thumb {
-    box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+    box-shadow: 1px 1px 1px #000000;
     border: 1px solid #000000;
     height: 23px;
     width: 16px;
