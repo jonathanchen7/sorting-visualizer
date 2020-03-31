@@ -24,7 +24,6 @@ header {
 /* -------------------------- RANGE SLIDER POSITIONING ----------------------------- */
 
 .slider {
-    margin-top: 25px;
     display: inline-block;
     color: black;
 }
@@ -44,6 +43,10 @@ header {
 
 .range-selection {
     margin: 0px 50px;
+}
+
+#top-controls {
+    margin-top: 25px;
 }
 
 /* -------------------------- ARRAY BARS ----------------------------- */

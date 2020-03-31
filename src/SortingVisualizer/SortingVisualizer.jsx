@@ -439,7 +439,7 @@ export default class SortingVisualizer extends React.Component {
                     <div id="title">sorting visualizer</div>
                 </header>
 
-                <div>
+                <div id="top-controls">
                     <div className="slider">
                         <label><span>&minus;</span>animation speed<span>+</span></label>
                         <input className="range-selection" type="range" defaultValue="7" min="3" max="11" step="2" onInput={this.updateAnimationSpeed} />
