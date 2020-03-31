@@ -378,7 +378,7 @@ export default class SortingVisualizer extends React.Component {
     // Temporarily disables buttons until sorting is complete.
     disableButtons(numAnimations) {
         const buttons = document.getElementsByTagName('button');
-        const finishButton = document.getElementById('finish-button');
+        const finishButton = document.getElementById('sort-button');
         const sliders = document.getElementsByTagName('input');
 
         // Disables all buttons except insta-sort.
@@ -439,7 +439,7 @@ export default class SortingVisualizer extends React.Component {
                     <div id="title">sorting visualizer</div>
                 </header>
 
-                <div id="top-controls">
+                <div>
                     <div className="slider">
                         <label><span>&minus;</span>animation speed<span>+</span></label>
                         <input className="range-selection" type="range" defaultValue="7" min="3" max="11" step="2" onInput={this.updateAnimationSpeed} />
@@ -466,12 +466,12 @@ export default class SortingVisualizer extends React.Component {
                     ))}
                 </div>
                 <div>
-                    <button className="bottom-button" onClick={() => this.bubbleSort()}>bubble</button>
-                    <button className="bottom-button" onClick={() => this.insertionSort()}>insertion</button>
-                    <button className="bottom-button" onClick={() => this.selectionSort()}>selection</button>
-                    <button className="bottom-button" onClick={() => this.mergeSort()}>merge</button>
-                    <button className="bottom-button" onClick={() => this.quickSort()}>quick</button>
-                    <button id="finish-button" className="bottom-button" onClick={() => this.instaSort()}>insta-sort!</button>
+                    <button onClick={() => this.bubbleSort()}>bubble</button>
+                    <button onClick={() => this.insertionSort()}>insertion</button>
+                    <button onClick={() => this.selectionSort()}>selection</button>
+                    <button onClick={() => this.mergeSort()}>merge</button>
+                    <button onClick={() => this.quickSort()}>quick</button>
+                    <button id="sort-button" onClick={() => this.instaSort()}>insta-sort!</button>
                 </div>
             </div>
         );

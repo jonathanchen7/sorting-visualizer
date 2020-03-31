@@ -1,44 +1,30 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto:500');
 
-div {
+/* -------------------------- GLOBAL ----------------------------- */
+
+body {
     font-family: 'Roboto', sans-serif;
     color: white;
 }
+
+/* -------------------------- HEADER ----------------------------- */
 
 header {
     background-color: #484f8f;
     height: 50px;
-    
     text-align: left;
     font-size: 25px;
 }
 
-button {
-    font-family: 'Roboto', sans-serif;
-    height: 35px;
-    background-color: #488F4B;
-    color: white;
-    border: none;
-    width: 120px;
-    margin: 15px;
-    border-radius: 3px;
-    font-size: 17px;
-    transition: all 0.2s;
+#title {
+    padding-top: 8px;
+    padding-left: 15px;
 }
 
-button:hover:enabled {
-    background-color: white;
-    border: 2px solid #488F4B;
-    color: #488F4B;
-    cursor: pointer;
-}
-
-button:disabled {
-    background-color: #AAAAAA;
-    cursor: default;
-}
+/* -------------------------- RANGE SLIDER POSITIONING ----------------------------- */
 
 .slider {
+    margin-top: 25px;
     display: inline-block;
     color: black;
 }
@@ -56,6 +42,12 @@ button:disabled {
     padding: 0px 15px 0px 15px;
 }
 
+.range-selection {
+    margin: 0px 50px;
+}
+
+/* -------------------------- ARRAY BARS ----------------------------- */
+
 .array-container {
     margin-top: 20px;
     height: 70vh;
@@ -67,39 +59,53 @@ button:disabled {
     border-bottom: 5px solid #488F4B;
 }
 
-.center-button {
-    width: 200px;
+/* -------------------------- BUTTON APPEARANCE ----------------------------- */
+
+button {
+    font-family: 'Roboto', sans-serif;
+    height: 35px;
+    background-color: #488F4B;
+    color: white;
+    border: none;
+    width: 120px;
+    margin: 15px;
+    border-radius: 3px;
+    font-size: 17px;
+    transition: all 0.3s;
 }
 
-.range-selection {
-    margin: 0px 50px;
+button:hover:enabled {
+    background-color: white;
+    border: 2px solid #488F4B;
+    color: #488F4B;
+    cursor: pointer;
 }
 
-#title {
-    padding-top: 8px;
-    padding-left: 15px;
-}
-
-#finish-button {
-    background-color: #484f8f;
-}
-
-#finish-button:disabled {
+button:disabled {
     background-color: #AAAAAA;
     cursor: default;
 }
 
-#finish-button:hover:enabled {
+.center-button {
+    width: 200px;
+}
+
+#sort-button {
+    background-color: #484f8f;
+}
+
+#sort-button:hover:enabled {
     background-color: white;
     border: 2px solid #484f8f;
     color: #484f8f;
 }
 
-#top-controls {
-    margin-top: 25px;
+#sort-button:disabled {
+    background-color: #AAAAAA;
+    cursor: default;
 }
 
-/* -------------------------- RANGE SLIDERS ----------------------------- */
+/* -------------------------- RANGE SLIDER APPEARANCE ----------------------------- */
 
 input[type=range] {
     -webkit-appearance: none;
@@ -110,10 +116,6 @@ input[type=range]:focus {
     outline: none;
 }
 
-input[type=range]:disabled {
-    opacity: 60%;
-}
-
 input[type=range]::-webkit-slider-runnable-track {
     height: 6px;
     cursor: pointer;
@@ -122,6 +124,16 @@ input[type=range]::-webkit-slider-runnable-track {
     border-radius: 1.3px;
     border: 0.2px solid #010101;
     transition: all 0.2s;
+}
+
+input[type=range]:focus::-webkit-slider-runnable-track {
+    background: #488F4B;
+}
+
+input[type=range]:disabled::-webkit-slider-runnable-track {
+    background: #AAAAAA;
+    box-shadow: 1px 1px 1px #777777;
+    cursor: default;
 }
 
 input[type=range]::-webkit-slider-thumb {
@@ -136,25 +148,43 @@ input[type=range]::-webkit-slider-thumb {
     margin-top: -8px;
 }
 
-input[type=range]:focus::-webkit-slider-runnable-track {
-    background: #488F4B;
+input[type=range]:disabled::-webkit-slider-thumb {
+    box-shadow: none;
+    border: 1px solid #777777;
+    cursor: default;
 }
-  /* input[type=range]::-moz-range-track {
-    width: 100%;
-    height: 8.4px;
+
+input[type=range]::-moz-range-track {
+    height: 6px;
     cursor: pointer;
-    box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
-    background: #3071a9;
+    box-shadow: 1px 1px 1px #000000;
+    background: #484f8f;
     border-radius: 1.3px;
     border: 0.2px solid #010101;
-  }
-  input[type=range]::-moz-range-thumb {
-    box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+    transition: all 0.2s;
+}
+
+input[type=range]:disabled::-moz-range-track {
+    background: #AAAAAA;
+    box-shadow: .5px .5px .5px #777777;
+    cursor: default;
+}
+
+input[type=range]::-moz-range-thumb {
+    box-shadow: 1px 1px 1px #000000;
     border: 1px solid #000000;
-    height: 36px;
-    width: 16px;
+    height: 18px;
+    width: 12px;
     border-radius: 3px;
     background: #ffffff;
     cursor: pointer;
-  }
-   */
+    -webkit-appearance: none;
+    margin-top: -8px;
+}
+
+input[type=range]:disabled::-moz-range-thumb {
+    box-shadow: none;
+    border: 1px solid #777777;
+    cursor: default;
+}
+  
